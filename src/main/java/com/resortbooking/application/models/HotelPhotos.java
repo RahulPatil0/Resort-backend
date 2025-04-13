@@ -58,23 +58,38 @@ public class HotelPhotos {
     public void setUploadedAt(LocalDateTime uploadedAt) {
         this.uploadedAt = uploadedAt;
     }
+    
 
-  
-    // equals and hashCode
+ 
+
+    public Hotel getHotel() {
+		return hotel;
+	}
+
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
+	}
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof HotelPhotos)) return false;
-        HotelPhotos other = (HotelPhotos) obj;
-        return Objects.equals(id, other.id) &&
-               Objects.equals(imageUrl, other.imageUrl);
-    }
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HotelPhotos other = (HotelPhotos) obj;
+		return Objects.equals(caption, other.caption) && Objects.equals(hotel, other.hotel)
+				&& Objects.equals(id, other.id) && Objects.equals(imageUrl, other.imageUrl)
+				&& Objects.equals(uploadedAt, other.uploadedAt);
+	}
+
+	
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id, imageUrl);
-    }
+	public int hashCode() {
+		return Objects.hash(caption, hotel, id, imageUrl, uploadedAt);
+	}
 
     // toString
 

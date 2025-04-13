@@ -15,6 +15,9 @@ public class HotelPolicy {
 
     @Column(length = 1000)
     private String description;
+    
+    @Column(name="policyType")
+    private String policyType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id", nullable = false)
@@ -43,6 +46,16 @@ public class HotelPolicy {
 
 	public void setHotel(Hotel hotel) {
 		this.hotel = hotel;
+	}
+	
+	
+
+	public String getPolicyType() {
+		return policyType;
+	}
+
+	public void setPolicyType(String policyType) {
+		this.policyType = policyType;
 	}
 
 	@Override

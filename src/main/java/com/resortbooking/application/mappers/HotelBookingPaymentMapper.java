@@ -1,11 +1,9 @@
 package com.resortbooking.application.mappers;
 
-import com.resortbooking.application.dto.HotelBookingPaymentDTO;
 import com.resortbooking.application.dto.HotelBookingDto;
+import com.resortbooking.application.dto.HotelBookingPaymentDTO;
 import com.resortbooking.application.dto.UserDTO;
 import com.resortbooking.application.models.HotelBookingPayment;
-
-import java.math.BigDecimal;
 
 public class HotelBookingPaymentMapper {
 
@@ -16,11 +14,11 @@ public class HotelBookingPaymentMapper {
 
         HotelBookingPaymentDTO dto = new HotelBookingPaymentDTO();
         dto.setId(payment.getId());
-        dto.setUser(userDto); // You can map User entity to UserDTO elsewhere
-        dto.setBooking(bookingDto); // You can map HotelBooking entity to HotelBookingDto elsewhere
+        dto.setUser(userDto);
+        dto.setBooking(bookingDto);
         dto.setPaymentMethod(payment.getPaymentMethod());
         dto.setTransactionId(payment.getTransactionId());
-        dto.setAmount(BigDecimal.valueOf(payment.getAmount()));
+        dto.setAmount(payment.getAmount()); // ✅ Fixed
         dto.setStatus(payment.getPaymentStatus());
         dto.setPaidAt(payment.getPaymentDate());
 
@@ -36,12 +34,9 @@ public class HotelBookingPaymentMapper {
         entity.setId(dto.getId());
         entity.setPaymentMethod(dto.getPaymentMethod());
         entity.setTransactionId(dto.getTransactionId());
-        entity.setAmount(dto.getAmount().doubleValue());
+        entity.setAmount(dto.getAmount()); // ✅ Fixed
         entity.setPaymentStatus(dto.getStatus());
         entity.setPaymentDate(dto.getPaidAt());
-
-        // Note: You'll need to manually set `booking` from the dto.getBooking() if required
-        // entity.setBooking(...); 
 
         return entity;
     }

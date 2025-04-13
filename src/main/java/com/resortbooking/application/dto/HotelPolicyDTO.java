@@ -50,4 +50,5 @@ public class HotelPolicyDTO {
     public void setHotelId(Long hotelId) {
         this.hotelId = hotelId;
     }
+    
 }
