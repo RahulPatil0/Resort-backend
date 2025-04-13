@@ -18,8 +18,8 @@ public class Amenity {
     // Category of the amenity (optional: e.g., "Room", "Outdoor", "Adventure")
     private String category;
 
-    @ManyToMany(mappedBy = "amenities")
-    private Set<Hotel> hotels = new HashSet<>();
+//    @ManyToMany(mappedBy = "amenities")
+//    private Set<Hotel> hotels = new HashSet<>();
 
     // Constructors
     public Amenity() {}
@@ -54,11 +54,11 @@ public class Amenity {
         this.category = category;
     }
 
-    public Set<Hotel> getHotels() {
-        return hotels;
-    }
-
-    public void setHotels(Set<Hotel> hotels) {
-        this.hotels = hotels;
-    }
+//    public Set<Hotel> getHotels() {
+//        return hotels;
+//    }
+//
+//    public void setHotels(Set<Hotel> hotels) {
+//        this.hotels = hotels;
+//    }
 }

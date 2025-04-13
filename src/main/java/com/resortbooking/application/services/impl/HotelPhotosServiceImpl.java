@@ -42,7 +42,8 @@ public class HotelPhotosServiceImpl implements HotelPhotosService {
     @Override
     public List<HotelPhotos> getPhotosByHotel(Hotel hotel) {
         try {
-            return hotelPhotosRepository.findByHotel(hotel);
+//            return hotelPhotosRepository.findByHotel(hotel);
+        	return null;
         } catch (Exception e) {
             // Log the exception
             System.err.println("Error fetching photos by hotel: " + e.getMessage());
@@ -53,7 +54,8 @@ public class HotelPhotosServiceImpl implements HotelPhotosService {
     @Override
     public List<HotelPhotos> getPhotosByHotelSorted(Hotel hotel) {
         try {
-            return hotelPhotosRepository.findByHotelOrderByUploadedAtDesc(hotel);
+//            return hotelPhotosRepository.findByHotelOrderByUploadedAtDesc(hotel);
+        	return null;
         } catch (Exception e) {
             // Log the exception
             System.err.println("Error fetching sorted photos by hotel: " + e.getMessage());
@@ -64,8 +66,9 @@ public class HotelPhotosServiceImpl implements HotelPhotosService {
     @Override
     public Optional<HotelPhotos> getPrimaryPhotoByHotel(Hotel hotel) {
         try {
-            List<HotelPhotos> primaryList = hotelPhotosRepository.findByHotelAndIsPrimaryTrue(hotel);
-            return primaryList.isEmpty() ? Optional.empty() : Optional.of(primaryList.get(0));
+//            List<HotelPhotos> primaryList = hotelPhotosRepository.findByHotelAndIsPrimaryTrue(hotel);
+//            return primaryList.isEmpty() ? Optional.empty() : Optional.of(primaryList.get(0));
+        	return null;
         } catch (Exception e) {
             // Log the exception
             System.err.println("Error fetching primary photo by hotel: " + e.getMessage());

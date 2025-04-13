@@ -10,9 +10,9 @@ import java.util.List;
 @Repository
 public interface HotelPhotosRepository extends JpaRepository<HotelPhotos, Long> {
 
-    List<HotelPhotos> findByHotel(Hotel hotel);
-
-    List<HotelPhotos> findByHotelOrderByUploadedAtDesc(Hotel hotel);
-
-    List<HotelPhotos> findByHotelAndIsPrimaryTrue(Hotel hotel); // To fetch main display image
+//    List<HotelPhotos> findByHotel(Hotel hotel);
+//
+//    List<HotelPhotos> findByHotelOrderByUploadedAtDesc(Hotel hotel);
+//
+//    List<HotelPhotos> findByHotelAndIsPrimaryTrue(Hotel hotel); // To fetch main display image
 }

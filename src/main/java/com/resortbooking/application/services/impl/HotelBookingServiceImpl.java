@@ -16,13 +16,9 @@ import com.resortbooking.application.services.HotelBookingService;
 @Service
 public class HotelBookingServiceImpl implements HotelBookingService {
 
-    private final HotelBookingRepository bookingRepository;
-
     @Autowired
-    public HotelBookingServiceImpl(HotelBookingRepository bookingRepository) {
-        this.bookingRepository = bookingRepository;
-    }
-
+    private HotelBookingRepository bookingRepository;
+    
     @Override
     public HotelBooking saveBooking(HotelBooking booking) {
         try {

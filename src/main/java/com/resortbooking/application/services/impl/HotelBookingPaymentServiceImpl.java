@@ -41,7 +41,8 @@ public class HotelBookingPaymentServiceImpl implements HotelBookingPaymentServic
     @Override
     public Optional<HotelBookingPayment> getPaymentByTransactionId(String transactionId) {
         try {
-            return Optional.ofNullable(paymentRepository.findByTransactionId(transactionId));
+//            return Optional.ofNullable(paymentRepository.findByTransactionId(transactionId));
+        	return null;
         } catch (Exception e) {
             // Log the exception
             System.err.println("Error fetching payment by transaction ID: " + e.getMessage());
@@ -52,7 +53,8 @@ public class HotelBookingPaymentServiceImpl implements HotelBookingPaymentServic
     @Override
     public List<HotelBookingPayment> getPaymentsByBooking(HotelBooking booking) {
         try {
-            return paymentRepository.findByBooking(booking);
+//            return paymentRepository.findByBooking(booking);
+        	return null;
         } catch (Exception e) {
             // Log the exception
             System.err.println("Error fetching payments by booking: " + e.getMessage());
@@ -63,7 +65,8 @@ public class HotelBookingPaymentServiceImpl implements HotelBookingPaymentServic
     @Override
     public List<HotelBookingPayment> getPaymentsByStatus(String status) {
         try {
-            return paymentRepository.findByPaymentStatus(status);
+//            return paymentRepository.findByPaymentStatus(status);
+        	return null;
         } catch (Exception e) {
             // Log the exception
             System.err.println("Error fetching payments by status: " + e.getMessage());

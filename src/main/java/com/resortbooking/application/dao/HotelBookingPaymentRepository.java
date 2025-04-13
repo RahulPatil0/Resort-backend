@@ -10,9 +10,9 @@ import java.util.List;
 @Repository
 public interface HotelBookingPaymentRepository extends JpaRepository<HotelBookingPayment, Long> {
 
-    List<HotelBookingPayment> findByBooking(HotelBooking booking);
+//    List<HotelBookingPayment> findByBooking(HotelBooking booking);
+//
+//    List<HotelBookingPayment> findByPaymentStatus(String paymentStatus);
 
-    List<HotelBookingPayment> findByPaymentStatus(String paymentStatus);
-
-    HotelBookingPayment findByTransactionId(String transactionId);
+//    HotelBookingPayment findByTransactionId(String transactionId);
 }

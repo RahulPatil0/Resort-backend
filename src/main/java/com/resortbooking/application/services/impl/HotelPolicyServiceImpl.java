@@ -3,6 +3,7 @@ package com.resortbooking.application.services.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.resortbooking.application.dao.HotelPolicyRepository;
@@ -16,19 +17,13 @@ import com.resortbooking.application.services.HotelPolicyService;
 @Service
 public class HotelPolicyServiceImpl implements HotelPolicyService {
 
-    private final HotelPolicyRepository policyRepo;
-    private final HotelRepository hotelRepo;
-    private final HotelPolicyMapper mapper;
-
-    // Manual constructor instead of @RequiredArgsConstructor
-    public HotelPolicyServiceImpl(
-            HotelPolicyRepository policyRepo,
-            HotelRepository hotelRepo,
-            HotelPolicyMapper mapper) {
-        this.policyRepo = policyRepo;
-        this.hotelRepo = hotelRepo;
-        this.mapper = mapper;
-    }
+	@Autowired
+    private HotelPolicyRepository policyRepo;
+	
+	@Autowired
+    private HotelRepository hotelRepo;
+	
+    private HotelPolicyMapper mapper;
 
     @Override
     public HotelPolicyDTO addPolicy(HotelPolicyDTO dto) {

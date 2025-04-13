@@ -47,8 +47,8 @@ public class Hotel {
 	@OneToMany(mappedBy = "hotel")
 	private List<HotelPhotos> hotelPhotos;
 
-	@OneToMany(mappedBy = "hotel")
-	private Set<Amenity> amenities = new HashSet<>();
+//	@OneToMany(mappedBy = "hotel")
+//	private Set<Amenity> amenities = new HashSet<>();
 
 	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<HotelPolicy> policies = new HashSet<>();
@@ -136,13 +136,13 @@ public class Hotel {
 	}
 
 	// ✅ Getters and Setters for amenities
-	public Set<Amenity> getAmenities() {
-		return amenities;
-	}
-
-	public void setAmenities(Set<Amenity> amenities) {
-		this.amenities = amenities;
-	}
+//	public Set<Amenity> getAmenities() {
+//		return amenities;
+//	}
+//
+//	public void setAmenities(Set<Amenity> amenities) {
+//		this.amenities = amenities;
+//	}
 
 	public List<HotelPhotos> getHotelPhotos() {
 		return hotelPhotos;
