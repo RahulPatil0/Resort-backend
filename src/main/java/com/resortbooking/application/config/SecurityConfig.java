@@ -3,37 +3,41 @@ package com.resortbooking.application.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    // 🛡 Security rules
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/").permitAll() // Allow public auth routes
-                .anyRequest().authenticated() // All other routes need auth
-            );
-        return http.build();
+    	 http
+         .csrf(csrf -> csrf.disable())
+         .authorizeHttpRequests(auth -> auth
+             .anyRequest().permitAll() // All routes are public
+         )
+         .httpBasic(Customizer.withDefaults()); // Still enabled but not needed
+
+     return http.build();
     }
 
-    // 🔐 Authentication manager bean (used in auth controller)
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
-    // 🔑 Password encoder (used to hash and verify passwords)
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	/*
+	 * @Bean public PasswordEncoder passwordEncoder() { return new
+	 * BCryptPasswordEncoder(); }
+	 * 
+	 * @Bean public UserDetailsService userDetailsService(PasswordEncoder encoder) {
+	 * UserDetails user = User .builder() .username("taj")
+	 * .password(encoder.encode("taj@123")) .roles("USER") .build();
+	 * 
+	 * return new InMemoryUserDetailsManager(user); }
+	 */
 }

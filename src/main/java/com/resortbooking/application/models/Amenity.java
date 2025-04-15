@@ -1,8 +1,14 @@
 package com.resortbooking.application.models;
 
-import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "amenities")
@@ -18,8 +24,9 @@ public class Amenity {
     // Category of the amenity (optional: e.g., "Room", "Outdoor", "Adventure")
     private String category;
 
-//    @ManyToMany(mappedBy = "amenities")
-//    private Set<Hotel> hotels = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
 
     // Constructors
     public Amenity() {}
@@ -54,11 +61,11 @@ public class Amenity {
         this.category = category;
     }
 
-//    public Set<Hotel> getHotels() {
-//        return hotels;
-//    }
-//
-//    public void setHotels(Set<Hotel> hotels) {
-//        this.hotels = hotels;
-//    }
+    public Hotel gethotel() {
+        return hotel;
+    }
+
+    public void sethotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
 }

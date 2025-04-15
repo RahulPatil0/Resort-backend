@@ -94,6 +94,11 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    
+    @GetMapping("/hi")
+    public String hi() {
+    	return "Hi";
+    }
 
  // Register a new user
     @PostMapping("/register")

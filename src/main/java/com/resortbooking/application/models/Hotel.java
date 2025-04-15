@@ -47,8 +47,8 @@ public class Hotel {
 	@OneToMany(mappedBy = "hotel")
 	private List<HotelPhotos> hotelPhotos;
 
-//	@OneToMany(mappedBy = "hotel")
-//	private Set<Amenity> amenities = new HashSet<>();
+	@OneToMany(mappedBy = "hotel")
+	private Set<Amenity> amenities = new HashSet<>();
 
 	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<HotelPolicy> policies = new HashSet<>();
