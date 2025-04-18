@@ -2,6 +2,7 @@ package com.resortbooking.application.models;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,7 +32,10 @@ public class Hotel {
 
 	@Column(name = "website")
 	private String website;
-
+	
+	@Column(name = "contact_email")
+	private String contactEmail;
+	
 	@Column(name = "latitude")
 	private Double latitude;
 
@@ -40,9 +44,12 @@ public class Hotel {
 
 	@Column(name = "price_perNight")
 	private BigDecimal pricePerNight;
-
-	@Column(name = "imageUrl")
-	private String imageUrl;
+	
+	@Column(name = "created_at")
+	private LocalDateTime createdAt;
+	
+	@Column(name = "last_updated_at")
+	private LocalDateTime lastUpdatedAt;
 
 	@OneToMany(mappedBy = "hotel")
 	private List<HotelPhotos> hotelPhotos;
@@ -67,8 +74,25 @@ public class Hotel {
 		return id;
 	}
 
+	
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getLastUpdatedAt() {
+		return lastUpdatedAt;
+	}
+
+	public void setLastUpdatedAt(LocalDateTime lastUpdatedAt) {
+		this.lastUpdatedAt = lastUpdatedAt;
 	}
 
 	public String getHotelName() {
@@ -159,13 +183,13 @@ public class Hotel {
 	public void setPricePerNight(BigDecimal pricePerNight) {
 		this.pricePerNight = pricePerNight;
 	}
-
-	public String getImageUrl() {
-		return imageUrl;
+	
+	public void setContactEmail(String contactEmail) {
+		this.contactEmail = contactEmail;
 	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
+	
+	public String getContactEmail() {
+		return contactEmail;
 	}
 
 	@Override

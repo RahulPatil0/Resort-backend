@@ -1,22 +1,46 @@
 package com.resortbooking.application.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class HotelDto {
+	
     private Long id;
     private String hotelName;
     private String address;
     private String description;
+    private String contactEmail;
     private BigDecimal pricePerNight;
     private Double rating;
-    private String imageUrl;
     private Boolean isAvailable;
     private String website;
+    private LocalDateTime createdAt;
+    private LocalDateTime lastUpdatedAt;
     private Double latitude;
     private Double longitude;
+    
+    private List<HotelPhotosDto> hotelPhotos;
 
-    // Getters and Setters
-    public Long getId() {
+    public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+	public LocalDateTime getLastUpdatedAt() {
+		return lastUpdatedAt;
+	}
+	public void setLastUpdatedAt(LocalDateTime lastUpdatedAt) {
+		this.lastUpdatedAt = lastUpdatedAt;
+	}
+	public String getContactEmail() {
+		return contactEmail;
+	}
+	public void setContactEmail(String contactEmail) {
+		this.contactEmail = contactEmail;
+	}
+	public Long getId() {
         return id;
     }
     public void setId(Long id) {
@@ -58,13 +82,6 @@ public class HotelDto {
         this.rating = rating;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public Boolean getIsAvailable() {
         return isAvailable;
     }
@@ -92,26 +109,18 @@ public class HotelDto {
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
-
-    // Manually added constructor for custom use
-    public HotelDto(Long id, String hotelName, String address, String description,
-                    BigDecimal pricePerNight, Double rating, String imageUrl) {
-        this.id = id;
-        this.hotelName = hotelName;
-        this.address = address;
-        this.description = description;
-        this.pricePerNight = pricePerNight;
-        this.rating = rating;
-        this.imageUrl = imageUrl;
-    }
-
-    public HotelDto() {
-        // Default constructor
-    }
+    
+	public List<HotelPhotosDto> getHotelPhotos() {
+		return hotelPhotos;
+	}
+	public void setHotelPhotos(List<HotelPhotosDto> hotelPhotos) {
+		this.hotelPhotos = hotelPhotos;
+	}
+	
 	@Override
 	public String toString() {
 		return "HotelDto [id=" + id + ", hotelName=" + hotelName + ", address=" + address + ", description="
-				+ description + ", pricePerNight=" + pricePerNight + ", rating=" + rating + ", imageUrl=" + imageUrl
+				+ description + ", pricePerNight=" + pricePerNight + ", rating=" + rating 
 				+ ", isAvailable=" + isAvailable + ", website=" + website + ", latitude=" + latitude + ", longitude="
 				+ longitude + "]";
 	}

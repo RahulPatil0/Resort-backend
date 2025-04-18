@@ -19,7 +19,7 @@ import com.resortbooking.application.response.ResortBookingResponse;
 import com.resortbooking.application.services.HotelService;
 
 @RestController
-@RequestMapping("/api/hotels")
+@RequestMapping("api/hotels")
 public class HotelController {
 
 	private static final Logger logger = LoggerFactory.getLogger(HotelController.class);
@@ -27,17 +27,15 @@ public class HotelController {
 	@Autowired
 	private HotelService hotelService;
 
-	@PostMapping
+	@PostMapping("/create")
 	public ResortBookingResponse createHotel(@RequestBody HotelDto hotelDto) {
 		String message = null;
-		HttpStatus status = HttpStatus.OK;
+		HttpStatus status = HttpStatus.BAD_REQUEST;
 		try {
-			HotelDto createdHotel = hotelService.createHotel(hotelDto);
-			logger.info("Hotel created successfully with ID {}", createdHotel.getId());
-			message = "Hotel created successfully";
+			message = hotelService.createHotel(hotelDto);
+			status = HttpStatus.OK;
 		} catch (ResortBookingException e) {
 			message = e.getMessage();
-			status = HttpStatus.BAD_REQUEST;
 			logger.error("Error occurred while creating hotel: {}", e.getMessage(), e);
 		} catch (Exception e) {
 			message = "Error creating hotel: " + e.getMessage();
@@ -50,11 +48,13 @@ public class HotelController {
 	@GetMapping
 	public ResortBookingResponse getAllHotels() {
 		String message = null;
-		HttpStatus status = HttpStatus.OK;
+		HttpStatus status = HttpStatus.BAD_REQUEST;
 		try {
 			List<HotelDto> hotels = hotelService.getAllHotels();
 			logger.info("Fetched {} hotels", hotels.size());
 			message = "Fetched " + hotels.size() + " hotels";
+			status = HttpStatus.OK;
+			return new ResortBookingResponse(hotels, status);
 		} catch (ResortBookingException e) {
 			message = e.getMessage();
 			status = HttpStatus.BAD_REQUEST;

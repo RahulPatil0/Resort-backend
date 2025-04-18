@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.resortbooking.application.dto.HotelDto;
 import com.resortbooking.application.exception.ResortBookingException;
+import com.resortbooking.application.mappers.HotelMapper;
 import com.resortbooking.application.models.Hotel;
 import com.resortbooking.application.models.HotelPhotos;
 import com.resortbooking.application.response.ResortBookingResponse;
@@ -48,12 +49,12 @@ public class HotelPhotosController {
 				logger.warn("Hotel ID {} not found", hotelId);
 				message = "Hotel not found.";
 				status = HttpStatus.BAD_REQUEST;
-			} else if (photoRequest.getImageUrl() == null || photoRequest.getImageUrl().trim().isEmpty()) {
+			} else if (photoRequest.getPhotoUrl() == null || photoRequest.getPhotoUrl().trim().isEmpty()) {
 				logger.warn("imageUrl is missing in the request for Hotel ID {}", hotelId);
 				message = "Image URL is required.";
 				status = HttpStatus.BAD_REQUEST;
 			} else {
-				Hotel hotel = convertDtoToEntity(hotelDto);
+				Hotel hotel = HotelMapper.toEntity(hotelDto);
 				photoRequest.setHotel(hotel);
 				photoRequest.setUploadedAt(LocalDateTime.now());
 
@@ -112,7 +113,7 @@ public class HotelPhotosController {
 				message = "Hotel not found.";
 				status = HttpStatus.BAD_REQUEST;
 			} else {
-				Hotel hotel = convertDtoToEntity(hotelDto);
+				Hotel hotel = HotelMapper.toEntity(hotelDto);
 				List<HotelPhotos> photos = hotelPhotosService.getPhotosByHotelSorted(hotel);
 				message = "Photos retrieved successfully.";
 			}
@@ -139,7 +140,7 @@ public class HotelPhotosController {
 				message = "Hotel not found.";
 				status = HttpStatus.BAD_REQUEST;
 			} else {
-				Hotel hotel = convertDtoToEntity(hotelDto);
+				Hotel hotel = HotelMapper.toEntity(hotelDto);
 				Optional<HotelPhotos> primaryPhoto = hotelPhotosService.getPrimaryPhotoByHotel(hotel);
 				if (primaryPhoto.isPresent()) {
 					message = "Primary photo retrieved successfully.";
@@ -188,19 +189,4 @@ public class HotelPhotosController {
 		return new ResortBookingResponse(message, status);
 	}
 
-	private Hotel convertDtoToEntity(HotelDto dto) {
-		Hotel hotel = new Hotel();
-		hotel.setId(dto.getId());
-		hotel.setHotelName(dto.getHotelName());
-		hotel.setAddress(dto.getAddress());
-		hotel.setDescription(dto.getDescription());
-		hotel.setPricePerNight(dto.getPricePerNight());
-		hotel.setRating(dto.getRating());
-		hotel.setImageUrl(dto.getImageUrl());
-		hotel.setIsAvailable(dto.getIsAvailable());
-		hotel.setWebsite(dto.getWebsite());
-		hotel.setLatitude(dto.getLatitude());
-		hotel.setLongitude(dto.getLongitude());
-		return hotel;
-	}
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface HotelService {
 
-    HotelDto createHotel(HotelDto hotelDto) throws ResortBookingException;
+    String createHotel(HotelDto hotelDto) throws ResortBookingException;
 
     List<HotelDto> getAllHotels() throws ResortBookingException;
 

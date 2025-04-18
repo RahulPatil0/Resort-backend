@@ -132,6 +132,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.resortbooking.application.dto.HotelDto;
 import com.resortbooking.application.exception.ResortBookingException;
+import com.resortbooking.application.mappers.HotelMapper;
 import com.resortbooking.application.models.Hotel;
 import com.resortbooking.application.models.HotelReview;
 import com.resortbooking.application.models.User;
@@ -222,7 +223,7 @@ public class HotelReviewController {
 		try {
 			HotelDto hotelDto = hotelService.getHotelById(hotelId);
 			if (hotelDto != null) {
-				Hotel hotel = convertDtoToEntity(hotelDto);
+				Hotel hotel = HotelMapper.toEntity(hotelDto);
 				List<HotelReview> reviews = reviewService.getReviewsByHotel(hotel);
 				message = "Reviews retrieved successfully.";
 				logger.info("Fetched reviews for hotel ID {}", hotelId);
@@ -249,7 +250,7 @@ public class HotelReviewController {
 		try {
 			HotelDto hotelDto = hotelService.getHotelById(hotelId);
 			if (hotelDto != null) {
-				Hotel hotel = convertDtoToEntity(hotelDto);
+				Hotel hotel = HotelMapper.toEntity(hotelDto);
 				List<HotelReview> reviews = reviewService.getRecentReviewsByHotel(hotel);
 				message = "Recent reviews retrieved successfully.";
 				logger.info("Fetched recent reviews for hotel ID {}", hotelId);
@@ -317,22 +318,5 @@ public class HotelReviewController {
 		}
 
 		return new ResortBookingResponse(message, status);
-	}
-
-	// 🔁 Convert HotelDto to Hotel entity
-	private Hotel convertDtoToEntity(HotelDto dto) {
-		Hotel hotel = new Hotel();
-		hotel.setId(dto.getId());
-		hotel.setHotelName(dto.getHotelName());
-		hotel.setAddress(dto.getAddress());
-		hotel.setDescription(dto.getDescription());
-		hotel.setPricePerNight(dto.getPricePerNight());
-		hotel.setRating(dto.getRating());
-		hotel.setImageUrl(dto.getImageUrl());
-		hotel.setIsAvailable(dto.getIsAvailable());
-		hotel.setWebsite(dto.getWebsite());
-		hotel.setLatitude(dto.getLatitude());
-		hotel.setLongitude(dto.getLongitude());
-		return hotel;
 	}
 }

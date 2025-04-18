@@ -1,5 +1,7 @@
 package com.resortbooking.application.mappers;
 
+import org.springframework.beans.BeanUtils;
+
 import com.resortbooking.application.dto.HotelDto;
 import com.resortbooking.application.dto.RoomsDto;
 import com.resortbooking.application.models.Hotel;
@@ -13,15 +15,9 @@ public class RoomsMapper {
         }
 
         Hotel hotel = room.getHotel();
-        HotelDto hotelDTO = hotel != null ? new HotelDto(
-                hotel.getId(),
-                hotel.getHotelName(),
-                hotel.getAddress(),
-                hotel.getDescription(),
-                hotel.getPricePerNight(),
-                hotel.getRating(),
-                hotel.getImageUrl()
-        ) : null;
+        HotelDto hotelDTO = new HotelDto();
+        
+        BeanUtils.copyProperties(hotel, hotelDTO);
 
         return new RoomsDto(
                 room.getId(),

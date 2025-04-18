@@ -165,6 +165,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.resortbooking.application.dto.HotelDto;
+import com.resortbooking.application.mappers.HotelMapper;
 import com.resortbooking.application.models.Hotel;
 import com.resortbooking.application.models.Rooms;
 import com.resortbooking.application.response.ResortBookingResponse;
@@ -198,7 +199,7 @@ public class RoomsController {
                     message = "Hotel not found with given ID.";
                     status = HttpStatus.NOT_FOUND;
                 } else {
-                    Hotel hotel = convertDtoToEntity(hotelDto);
+                    Hotel hotel = HotelMapper.toEntity(hotelDto);
                     room.setHotel(hotel);
                     roomsService.createRoom(room);
                     message = "Room created successfully.";
@@ -291,7 +292,7 @@ public class RoomsController {
                 message = "Hotel not found.";
                 status = HttpStatus.NOT_FOUND;
             } else {
-                Hotel hotel = convertDtoToEntity(hotelDto);
+                Hotel hotel = HotelMapper.toEntity(hotelDto);
                 List<Rooms> rooms = roomsService.getRoomsByHotel(hotel);
                 message = rooms.isEmpty() ? "No rooms found for this hotel." : "Rooms retrieved successfully.";
             }
@@ -315,7 +316,7 @@ public class RoomsController {
                 message = "Hotel not found.";
                 status = HttpStatus.NOT_FOUND;
             } else {
-                Hotel hotel = convertDtoToEntity(hotelDto);
+                Hotel hotel = HotelMapper.toEntity(hotelDto);
                 List<Rooms> availableRooms = roomsService.getAvailableRoomsByHotel(hotel);
                 message = availableRooms.isEmpty() ? "No available rooms in this hotel." : "Available rooms retrieved successfully.";
             }
@@ -339,7 +340,7 @@ public class RoomsController {
                 message = "Hotel not found.";
                 status = HttpStatus.NOT_FOUND;
             } else {
-                Hotel hotel = convertDtoToEntity(hotelDto);
+                Hotel hotel = HotelMapper.toEntity(hotelDto);
                 List<Rooms> rooms = roomsService.getRoomsByType(hotel, type);
                 message = rooms.isEmpty() ? "No rooms found for type: " + type : "Rooms of type '" + type + "' retrieved successfully.";
             }
@@ -405,21 +406,5 @@ public class RoomsController {
         return new ResortBookingResponse(message, status);
     }
 
-    // 🔧 Convert DTO to Entity
-    private Hotel convertDtoToEntity(HotelDto dto) {
-        Hotel hotel = new Hotel();
-        hotel.setId(dto.getId());
-        hotel.setHotelName(dto.getHotelName());
-        hotel.setAddress(dto.getAddress());
-        hotel.setDescription(dto.getDescription());
-        hotel.setPricePerNight(dto.getPricePerNight());
-        hotel.setRating(dto.getRating());
-        hotel.setImageUrl(dto.getImageUrl());
-        hotel.setIsAvailable(dto.getIsAvailable());
-        hotel.setWebsite(dto.getWebsite());
-        hotel.setLatitude(dto.getLatitude());
-        hotel.setLongitude(dto.getLongitude());
-        return hotel;
-    }
 }
 

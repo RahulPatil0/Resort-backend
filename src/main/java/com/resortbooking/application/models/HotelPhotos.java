@@ -13,7 +13,7 @@ public class HotelPhotos {
     private Long id;
 
     @Column(nullable = false)
-    private String imageUrl;
+    private String photoUrl;
     
     @Column(name="caption")
     private String caption;
@@ -35,15 +35,15 @@ public class HotelPhotos {
         this.id = id;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+    public String getPhotoUrl() {
+		return photoUrl;
+	}
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
+	}
 
-    public String getCaption() {
+	public String getCaption() {
         return caption;
     }
 
@@ -80,7 +80,7 @@ public class HotelPhotos {
 			return false;
 		HotelPhotos other = (HotelPhotos) obj;
 		return Objects.equals(caption, other.caption) && Objects.equals(hotel, other.hotel)
-				&& Objects.equals(id, other.id) && Objects.equals(imageUrl, other.imageUrl)
+				&& Objects.equals(id, other.id) && Objects.equals(photoUrl, other.photoUrl)
 				&& Objects.equals(uploadedAt, other.uploadedAt);
 	}
 
@@ -88,7 +88,7 @@ public class HotelPhotos {
 
     @Override
 	public int hashCode() {
-		return Objects.hash(caption, hotel, id, imageUrl, uploadedAt);
+		return Objects.hash(caption, hotel, id, photoUrl, uploadedAt);
 	}
 
     // toString
@@ -97,7 +97,7 @@ public class HotelPhotos {
     public String toString() {
         return "HotelPhotos{" +
                 "id=" + id +
-                ", imageUrl='" + imageUrl + '\'' +
+                ", imageUrl='" + photoUrl + '\'' +
                 ", hotelId=" + (hotel != null ? hotel.getId() : null) +
                 '}';
     }
