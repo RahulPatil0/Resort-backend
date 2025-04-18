@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.resortbooking.application.dao.AmenityRepository;
 import com.resortbooking.application.dto.AmenityDTO;
+import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.mappers.AmenityMapper;
 import com.resortbooking.application.models.Amenity;
 import com.resortbooking.application.services.AmenityService;
@@ -22,45 +23,45 @@ public class AmenityServiceImpl implements AmenityService {
     private AmenityMapper amenityMapper;
 
     @Override
-    public AmenityDTO createAmenity(AmenityDTO amenityDTO) {
+    public AmenityDTO createAmenity(AmenityDTO amenityDTO) throws ResortBookingException {
         try {
             Amenity amenity = amenityMapper.toEntity(amenityDTO);
             return amenityMapper.toDTO(amenityRepository.save(amenity));
         } catch (Exception e) {
             // Log the exception
-            System.err.println("Error creating amenity: " + e.getMessage());
-            throw new RuntimeException("Error creating amenity: " + e.getMessage());
+//            System.err.println("Error creating amenity: " + e.getMessage());
+            throw new ResortBookingException("Error creating amenity: " + e.getMessage());
         }
     }
 
     @Override
-    public List<AmenityDTO> getAllAmenities() {
+    public List<AmenityDTO> getAllAmenities() throws ResortBookingException{
         try {
             return amenityRepository.findAll().stream()
                     .map(amenityMapper::toDTO)
                     .collect(Collectors.toList());
         } catch (Exception e) {
             // Log the exception
-            System.err.println("Error fetching all amenities: " + e.getMessage());
-            throw new RuntimeException("Error fetching all amenities: " + e.getMessage());
+//            System.err.println("Error fetching all amenities: " + e.getMessage());
+            throw new ResortBookingException("Error fetching all amenities: " + e.getMessage());
         }
     }
 
     @Override
-    public AmenityDTO getAmenityById(Long id) {
+    public AmenityDTO getAmenityById(Long id) throws ResortBookingException{
         try {
             return amenityRepository.findById(id)
                     .map(amenityMapper::toDTO)
                     .orElseThrow(() -> new RuntimeException("Amenity not found"));
         } catch (Exception e) {
             // Log the exception
-            System.err.println("Error fetching amenity by ID: " + e.getMessage());
-            throw new RuntimeException("Error fetching amenity by ID: " + e.getMessage());
+//            System.err.println("Error fetching amenity by ID: " + e.getMessage());
+            throw new ResortBookingException("Error fetching amenity by ID: " + e.getMessage());
         }
     }
 
     @Override
-    public void deleteAmenity(Long id) {
+    public void deleteAmenity(Long id) throws ResortBookingException{
         try {
             if (!amenityRepository.existsById(id)) {
                 throw new RuntimeException("Amenity not found for deletion");
@@ -68,8 +69,8 @@ public class AmenityServiceImpl implements AmenityService {
             amenityRepository.deleteById(id);
         } catch (Exception e) {
             // Log the exception
-            System.err.println("Error deleting amenity: " + e.getMessage());
-            throw new RuntimeException("Error deleting amenity: " + e.getMessage());
+//            System.err.println("Error deleting amenity: " + e.getMessage());
+            throw new ResortBookingException("Error deleting amenity: " + e.getMessage());
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.resortbooking.application.services;
 
+import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.models.User;
 
 import java.util.List;
@@ -7,19 +8,19 @@ import java.util.Optional;
 
 public interface UserService {
 
-    User registerUser(User user);
+    User registerUser(User user) throws ResortBookingException;
 
-    Optional<User> getUserById(Long id);
+    Optional<User> getUserById(Long id) throws ResortBookingException;
 
-    Optional<User> getUserByEmail(String email);
+    Optional<User> getUserByEmail(String email) throws ResortBookingException;
 
-    Optional<User> getUserByPhone(String phone);
+    Optional<User> getUserByPhone(String phone) throws ResortBookingException;
 
-    boolean emailExists(String email);
+    boolean emailExists(String email) throws ResortBookingException;
 
-    boolean phoneExists(String phone);
+    boolean phoneExists(String phone) throws ResortBookingException;
 
-    List<User> getAllUsers();
+    List<User> getAllUsers() throws ResortBookingException;
 
-    void deleteUser(Long id);
+    void deleteUser(Long id) throws ResortBookingException;
 }

@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.resortbooking.application.dto.HotelDto;
+import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.models.HotelBooking;
 import com.resortbooking.application.models.User;
+import com.resortbooking.application.response.ResortBookingResponse;
 import com.resortbooking.application.services.HotelBookingService;
 import com.resortbooking.application.services.HotelService;
 import com.resortbooking.application.services.UserService;
@@ -28,127 +30,150 @@ import com.resortbooking.application.services.UserService;
 @RequestMapping("/api/bookings")
 public class HotelBookingController {
 
-    private final HotelBookingService hotelBookingService;
-    private final UserService userService;
-    private final HotelService hotelService;
+  
+    @Autowired
+    private HotelBookingService hotelBookingService;
 
     @Autowired
-    public HotelBookingController(HotelBookingService hotelBookingService,
-                                  UserService userService,
-                                  HotelService hotelService) {
-        this.hotelBookingService = hotelBookingService;
-        this.userService = userService;
-        this.hotelService = hotelService;
-    }
+    private UserService userService;
+
+    @Autowired
+    private HotelService hotelService;
 
     @PostMapping
-    public ResponseEntity<HotelBooking> createBooking(@RequestBody HotelBooking booking) {
+    public ResortBookingResponse createBooking(@RequestBody HotelBooking booking) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        String message = "";
+
         try {
             booking.setCreatedAt(LocalDate.now().atStartOfDay());
             booking.setUpdatedAt(LocalDate.now().atStartOfDay());
             HotelBooking savedBooking = hotelBookingService.saveBooking(booking);
-            return ResponseEntity.ok(savedBooking);
-        } catch (Exception ex) {
-            return ResponseEntity.internalServerError().build();
+            status = HttpStatus.CREATED;
+            return new ResortBookingResponse(savedBooking, status);
+        } catch (ResortBookingException e) {
+            message = e.getMessage();
+        } catch (Exception e) {
+            message = "Error creating booking: " + e.getMessage();
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
+
+        return new ResortBookingResponse(message, status);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HotelBooking> getBookingById(@PathVariable Long id) {
+    public ResortBookingResponse getBookingById(@PathVariable Long id) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        String message = "Booking not found with ID: " + id;
+
         try {
             Optional<HotelBooking> booking = hotelBookingService.getBookingById(id);
-            return booking.map(ResponseEntity::ok)
-                          .orElse(ResponseEntity.notFound().build());
-        } catch (Exception ex) {
-            return ResponseEntity.internalServerError().build();
+            if (booking.isPresent()) {
+                return new ResortBookingResponse(booking.get(), HttpStatus.OK);
+            }
+        } catch (ResortBookingException e) {
+            message = e.getMessage();
+        }catch (Exception e) {
+            message = "Error retrieving booking: " + e.getMessage();
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
+
+        return new ResortBookingResponse(message, status);
     }
 
     @GetMapping
-    public ResponseEntity<List<HotelBooking>> getAllBookings() {
+    public ResortBookingResponse getAllBookings() {
         try {
-            return ResponseEntity.ok(hotelBookingService.getAllBookings());
-        } catch (Exception ex) {
-            return ResponseEntity.internalServerError().build();
+            List<HotelBooking> bookings = hotelBookingService.getAllBookings();
+            return new ResortBookingResponse(bookings, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResortBookingResponse("Error retrieving bookings: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<HotelBooking>> getBookingsByUser(@PathVariable Long userId) {
+    public ResortBookingResponse getBookingsByUser(@PathVariable Long userId) {
         try {
             Optional<User> user = userService.getUserById(userId);
-            return user.map(u -> ResponseEntity.ok(hotelBookingService.getBookingsByUser(u)))
-                       .orElse(ResponseEntity.notFound().build());
-        } catch (Exception ex) {
-            return ResponseEntity.internalServerError().build();
+            if (user.isPresent()) {
+                List<HotelBooking> bookings = hotelBookingService.getBookingsByUser(user.get());
+                return new ResortBookingResponse(bookings, HttpStatus.OK);
+            }
+            return new ResortBookingResponse("User not found", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResortBookingResponse("Error retrieving user bookings: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/hotel/{hotelId}")
-    public ResponseEntity<?> getBookingsByHotel(@PathVariable Long hotelId) {
+    public ResortBookingResponse getBookingsByHotel(@PathVariable Long hotelId) {
         try {
-            HotelDto hotel = hotelService.getHotelById(hotelId); // assumes optional unwrap happens in service
-            return new ResponseEntity<>(hotel, HttpStatus.OK);
-        } catch (Exception ex) {
-            return ResponseEntity.internalServerError().build();
+            HotelDto hotel = hotelService.getHotelById(hotelId);
+            return new ResortBookingResponse(hotel, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResortBookingResponse("Error retrieving hotel bookings: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/status")
-    public ResponseEntity<List<HotelBooking>> getBookingsByStatus(@RequestParam String bookingStatus) {
+    public ResortBookingResponse getBookingsByStatus(@RequestParam String bookingStatus) {
         try {
-            return ResponseEntity.ok(hotelBookingService.getBookingsByBookingStatus(bookingStatus));
-        } catch (Exception ex) {
-            return ResponseEntity.internalServerError().build();
+            List<HotelBooking> bookings = hotelBookingService.getBookingsByBookingStatus(bookingStatus);
+            return new ResortBookingResponse(bookings, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResortBookingResponse("Error retrieving bookings by status: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/payment-status")
-    public ResponseEntity<List<HotelBooking>> getBookingsByPaymentStatus(@RequestParam String paymentStatus) {
+    public ResortBookingResponse getBookingsByPaymentStatus(@RequestParam String paymentStatus) {
         try {
-            return ResponseEntity.ok(hotelBookingService.getBookingsByPaymentStatus(paymentStatus));
-        } catch (Exception ex) {
-            return ResponseEntity.internalServerError().build();
+            List<HotelBooking> bookings = hotelBookingService.getBookingsByPaymentStatus(paymentStatus);
+            return new ResortBookingResponse(bookings, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResortBookingResponse("Error retrieving bookings by payment status: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/date-range")
-    public ResponseEntity<List<HotelBooking>> getBookingsByDateRange(@RequestParam LocalDate start,
-                                                                      @RequestParam LocalDate end) {
+    public ResortBookingResponse getBookingsByDateRange(@RequestParam LocalDate start,
+                                                         @RequestParam LocalDate end) {
         try {
-            return ResponseEntity.ok(hotelBookingService.getBookingsBetweenDates(start, end));
-        } catch (Exception ex) {
-            return ResponseEntity.internalServerError().build();
+            List<HotelBooking> bookings = hotelBookingService.getBookingsBetweenDates(start, end);
+            return new ResortBookingResponse(bookings, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResortBookingResponse("Error retrieving bookings by date range: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/hotel-status")
-    public ResponseEntity<List<HotelBooking>> getBookingsByStatusAndHotel(@RequestParam String bookingStatus,
-                                                                           @RequestParam Long hotelId) {
+    public ResortBookingResponse getBookingsByStatusAndHotel(@RequestParam String bookingStatus,
+                                                              @RequestParam Long hotelId) {
         try {
-            return ResponseEntity.ok(hotelBookingService.getBookingsByStatusAndHotelId(bookingStatus, hotelId));
-        } catch (Exception ex) {
-            return ResponseEntity.internalServerError().build();
+            List<HotelBooking> bookings = hotelBookingService.getBookingsByStatusAndHotelId(bookingStatus, hotelId);
+            return new ResortBookingResponse(bookings, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResortBookingResponse("Error retrieving bookings by status and hotel: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
+    public ResortBookingResponse deleteBooking(@PathVariable Long id) {
         try {
             Optional<HotelBooking> existing = hotelBookingService.getBookingById(id);
             if (existing.isPresent()) {
                 hotelBookingService.deleteBooking(id);
-                return ResponseEntity.noContent().build();
+                return new ResortBookingResponse("Booking deleted successfully", HttpStatus.OK);
             } else {
-                return ResponseEntity.notFound().build();
+                return new ResortBookingResponse("Booking not found", HttpStatus.NOT_FOUND);
             }
-        } catch (Exception ex) {
-            return ResponseEntity.internalServerError().build();
+        } catch (Exception e) {
+            return new ResortBookingResponse("Error deleting booking: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HotelBooking> updateBooking(@PathVariable Long id, @RequestBody HotelBooking updatedBooking) {
+    public ResortBookingResponse updateBooking(@PathVariable Long id, @RequestBody HotelBooking updatedBooking) {
         try {
             Optional<HotelBooking> existing = hotelBookingService.getBookingById(id);
             if (existing.isPresent()) {
@@ -163,12 +188,13 @@ public class HotelBookingController {
                 existingBooking.setBookingStatus(updatedBooking.getBookingStatus());
                 existingBooking.setUpdatedAt(LocalDate.now().atStartOfDay());
 
-                return ResponseEntity.ok(hotelBookingService.saveBooking(existingBooking));
+                HotelBooking updated = hotelBookingService.saveBooking(existingBooking);
+                return new ResortBookingResponse(updated, HttpStatus.OK);
             } else {
-                return ResponseEntity.notFound().build();
+                return new ResortBookingResponse("Booking not found", HttpStatus.NOT_FOUND);
             }
-        } catch (Exception ex) {
-            return ResponseEntity.internalServerError().build();
+        } catch (Exception e) {
+            return new ResortBookingResponse("Error updating booking: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

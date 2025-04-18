@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.resortbooking.application.dao.HotelRepository;
 import com.resortbooking.application.dto.HotelDto;
+import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.mappers.HotelMapper;
 import com.resortbooking.application.models.Hotel;
 import com.resortbooking.application.services.HotelService;
@@ -21,41 +22,41 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public HotelDto createHotel(HotelDto hotelDto) {
+    public HotelDto createHotel(HotelDto hotelDto) throws ResortBookingException{
         try {
             Hotel hotel = HotelMapper.toEntity(hotelDto);
             Hotel savedHotel = hotelRepository.save(hotel);
             return HotelMapper.toDto(savedHotel);
         } catch (Exception e) {
             // Log the exception
-            System.err.println("Error creating hotel: " + e.getMessage());
-            throw new RuntimeException("Error creating hotel: " + e.getMessage());
+//            System.err.println("Error creating hotel: " + e.getMessage());
+            throw new ResortBookingException("Error creating hotel: " + e.getMessage());
         }
     }
 
     @Override
-    public List<HotelDto> getAllHotels() {
+    public List<HotelDto> getAllHotels() throws ResortBookingException{
         try {
             return hotelRepository.findAll().stream()
                     .map(HotelMapper::toDto)
                     .collect(Collectors.toList());
         } catch (Exception e) {
             // Log the exception
-            System.err.println("Error fetching all hotels: " + e.getMessage());
-            throw new RuntimeException("Error fetching all hotels: " + e.getMessage());
+//            System.err.println("Error fetching all hotels: " + e.getMessage());
+            throw new ResortBookingException("Error fetching all hotels: " + e.getMessage());
         }
     }
 
     @Override
-    public HotelDto getHotelById(Long id) {
+    public HotelDto getHotelById(Long id) throws ResortBookingException{
         try {
             return hotelRepository.findById(id)
                     .map(HotelMapper::toDto)
                     .orElse(null);
         } catch (Exception e) {
             // Log the exception
-            System.err.println("Error fetching hotel by ID: " + e.getMessage());
-            throw new RuntimeException("Error fetching hotel by ID: " + e.getMessage());
+//            System.err.println("Error fetching hotel by ID: " + e.getMessage());
+            throw new ResortBookingException("Error fetching hotel by ID: " + e.getMessage());
         }
     }
 }

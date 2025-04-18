@@ -1,6 +1,7 @@
 package com.resortbooking.application.services.impl;
 
 import com.resortbooking.application.dao.RolesRepository;
+import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.models.Roles;
 import com.resortbooking.application.services.RolesService;
 
@@ -17,68 +18,68 @@ public class RolesServiceImpl implements RolesService {
     private RolesRepository rolesRepository;
 
     @Override
-    public Roles createRole(Roles role) {
+    public Roles createRole(Roles role) throws ResortBookingException{
         try {
             return rolesRepository.save(role);
         } catch (Exception e) {
             // Log the exception
-            System.err.println("Error creating role: " + e.getMessage());
-            throw new RuntimeException("Error creating role: " + e.getMessage());
+//            System.err.println("Error creating role: " + e.getMessage());
+            throw new ResortBookingException("Error creating role: " + e.getMessage());
         }
     }
 
     @Override
-    public List<Roles> getAllRoles() {
+    public List<Roles> getAllRoles() throws ResortBookingException{
         try {
             return rolesRepository.findAll();
         } catch (Exception e) {
             // Log the exception
-            System.err.println("Error fetching all roles: " + e.getMessage());
-            throw new RuntimeException("Error fetching all roles: " + e.getMessage());
+//            System.err.println("Error fetching all roles: " + e.getMessage());
+            throw new ResortBookingException("Error fetching all roles: " + e.getMessage());
         }
     }
 
     @Override
-    public Optional<Roles> getRoleById(Long id) {
+    public Optional<Roles> getRoleById(Long id) throws ResortBookingException{
         try {
             return rolesRepository.findById(id);
         } catch (Exception e) {
             // Log the exception
-            System.err.println("Error fetching role by ID: " + e.getMessage());
-            throw new RuntimeException("Error fetching role by ID: " + e.getMessage());
+//            System.err.println("Error fetching role by ID: " + e.getMessage());
+            throw new ResortBookingException("Error fetching role by ID: " + e.getMessage());
         }
     }
 
     @Override
-    public Optional<Roles> getRoleByName(String roleName) {
+    public Optional<Roles> getRoleByName(String roleName) throws ResortBookingException{
         try {
             return rolesRepository.findByRole(roleName);
         } catch (Exception e) {
             // Log the exception
-            System.err.println("Error fetching role by name: " + e.getMessage());
-            throw new RuntimeException("Error fetching role by name: " + e.getMessage());
+//            System.err.println("Error fetching role by name: " + e.getMessage());
+            throw new ResortBookingException("Error fetching role by name: " + e.getMessage());
         }
     }
 
     @Override
-    public Roles updateRole(Roles role) {
+    public Roles updateRole(Roles role) throws ResortBookingException{
         try {
             return rolesRepository.save(role);
         } catch (Exception e) {
             // Log the exception
-            System.err.println("Error updating role: " + e.getMessage());
-            throw new RuntimeException("Error updating role: " + e.getMessage());
+//            System.err.println("Error updating role: " + e.getMessage());
+            throw new ResortBookingException("Error updating role: " + e.getMessage());
         }
     }
 
     @Override
-    public void deleteRole(Long id) {
+    public void deleteRole(Long id) throws ResortBookingException{
         try {
             rolesRepository.deleteById(id);
         } catch (Exception e) {
             // Log the exception
-            System.err.println("Error deleting role: " + e.getMessage());
-            throw new RuntimeException("Error deleting role: " + e.getMessage());
+//            System.err.println("Error deleting role: " + e.getMessage());
+            throw new ResortBookingException("Error deleting role: " + e.getMessage());
         }
     }
 }

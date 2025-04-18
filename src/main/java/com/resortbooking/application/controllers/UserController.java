@@ -1,190 +1,176 @@
-//package com.resortbooking.application.controllers;
-//
-//import com.resortbooking.application.models.User;
-//import com.resortbooking.application.services.UserService;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.List;
-//import java.util.Optional;
-//
-//@RestController
-//@RequestMapping("/api/users")
-//@CrossOrigin(origins = "*") 
-//public class UserController {
-//
-//    @Autowired
-//    private UserService userService;
-//
-//    // Register a new user
-//    @PostMapping("/register")
-//    public ResponseEntity<User> registerUser(@RequestBody User user) {
-//        if (userService.emailExists(user.getEmail())) {
-//            return ResponseEntity.badRequest().body(null); // Email already exists
-//        }
-//        if (userService.phoneExists(user.getPhoneNumber())) {
-//            return ResponseEntity.badRequest().body(null); // Phone already exists
-//        }
-//
-//        // Optional: Add validation or password hashing here
-//        User savedUser = userService.registerUser(user);
-//        return ResponseEntity.ok(savedUser);
-//    }
-//
-//    // Get user by ID
-//    @GetMapping("/{id}")
-//    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-//        Optional<User> userOpt = userService.getUserById(id);
-//        return userOpt.map(ResponseEntity::ok)
-//                      .orElse(ResponseEntity.notFound().build());
-//    }
-//
-//    // Get user by email
-//    @GetMapping("/email")
-//    public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
-//        Optional<User> userOpt = userService.getUserByEmail(email);
-//        return userOpt.map(ResponseEntity::ok)
-//                      .orElse(ResponseEntity.notFound().build());
-//    }
-//
-//    // Get user by phone number
-//    @GetMapping("/phone")
-//    public ResponseEntity<User> getUserByPhone(@RequestParam String phone) {
-//        Optional<User> userOpt = userService.getUserByPhone(phone);
-//        return userOpt.map(ResponseEntity::ok)
-//                      .orElse(ResponseEntity.notFound().build());
-//    }
-//
-//    // Get all users
-//    @GetMapping
-//    public ResponseEntity<List<User>> getAllUsers() {
-//        List<User> users = userService.getAllUsers();
-//        return ResponseEntity.ok(users);
-//    }
-//
-//    // Delete user by ID
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-//        Optional<User> userOpt = userService.getUserById(id);
-//        if (userOpt.isPresent()) {
-//            userService.deleteUser(id);
-//            return ResponseEntity.ok("User deleted successfully");
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-//}
-package com.resortbooking.application.controllers; 
+package com.resortbooking.application.controllers;
 
-import com.resortbooking.application.models.User;
-import com.resortbooking.application.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.resortbooking.application.exception.ResortBookingException;
+import com.resortbooking.application.models.User;
+import com.resortbooking.application.response.ResortBookingResponse;
+import com.resortbooking.application.services.UserService;
+
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "*") 
+@CrossOrigin(origins = "*")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
-    
-    @GetMapping("/hi")
-    public String hi() {
-    	return "Hi";
-    }
+	@Autowired
+	private UserService userService;
 
- // Register a new user
-    @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
-        try {
-            if (userService.emailExists(user.getEmail())) {
-                return ResponseEntity.badRequest().body(null); // Email already exists
-            }
-            if (userService.phoneExists(user.getPhoneNumber())) {
-                return ResponseEntity.badRequest().body(null); // Phone already exists
-            }
+	@GetMapping("/hi")
+	public String hi() {
+		return "Hi";
+	}
 
-            // Optional: Add validation or password hashing here
-            User savedUser = userService.registerUser(user);
-            return ResponseEntity.ok(savedUser);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body(null); // Handle unexpected errors
-        }
-    }
+	// Register a new user
+	@PostMapping("/register")
+	public ResortBookingResponse registerUser(@RequestBody User user) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		String message = "";
 
-    // Get user by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        try {
-            Optional<User> userOpt = userService.getUserById(id);
-            return userOpt.map(ResponseEntity::ok)
-                          .orElseGet(() -> ResponseEntity.notFound().build());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body(null); // Handle unexpected errors
-        }
-    }
+		try {
+			if (userService.emailExists(user.getEmail())) {
+				throw new ResortBookingException("Email already exists");
+			} else if (userService.phoneExists(user.getPhoneNumber())) {
+				throw new ResortBookingException("Phone number already exists");
+			} else {
+				User savedUser = userService.registerUser(user);
+				status = HttpStatus.OK;
+				return new ResortBookingResponse(savedUser, status);
+			}
+		} catch (ResortBookingException e) {
+			message = e.getMessage();
+		} catch (Exception e) {
+			message = "Error registering user: " + e.getMessage();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
 
-    // Get user by email
-    @GetMapping("/email")
-    public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
-        try {
-            Optional<User> userOpt = userService.getUserByEmail(email);
-            return userOpt.map(ResponseEntity::ok)
-                          .orElseGet(() -> ResponseEntity.notFound().build());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body(null); // Handle unexpected errors
-        }
-    }
+		return new ResortBookingResponse(message, status);
+	}
 
-    // Get user by phone number
-    @GetMapping("/phone")
-    public ResponseEntity<User> getUserByPhone(@RequestParam String phone) {
-        try {
-            Optional<User> userOpt = userService.getUserByPhone(phone);
-            return userOpt.map(ResponseEntity::ok)
-                          .orElseGet(() -> ResponseEntity.notFound().build());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body(null); // Handle unexpected errors
-        }
-    }
+	// Get user by ID
+	@GetMapping("/{id}")
+	public ResortBookingResponse getUserById(@PathVariable Long id) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		String message = "";
 
-    // Get all users
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        try {
-            List<User> users = userService.getAllUsers();
-            return ResponseEntity.ok(users);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body(null); // Handle unexpected errors
-        }
-    }
+		try {
+			Optional<User> userOpt = userService.getUserById(id);
+			if (userOpt.isPresent()) {
+				status = HttpStatus.OK;
+				return new ResortBookingResponse(userOpt.get(), status);
+			} else {
+				throw new ResortBookingException("User not found with ID: " + id);
+			}
+		} catch (ResortBookingException e) {
+			message = e.getMessage();
+		} catch (Exception e) {
+			message = "Error retrieving user: " + e.getMessage();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
 
-    // Delete user by ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        try {
-            Optional<User> userOpt = userService.getUserById(id);
-            if (userOpt.isPresent()) {
-                userService.deleteUser(id);
-                return ResponseEntity.ok("User deleted successfully");
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body("Error occurred while deleting user.");
-        }
-    }
+		return new ResortBookingResponse(message, status);
+	}
+
+	// Get user by email
+	@GetMapping("/email")
+	public ResortBookingResponse getUserByEmail(@RequestParam String email) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		String message = "";
+
+		try {
+			Optional<User> userOpt = userService.getUserByEmail(email);
+			if (userOpt.isPresent()) {
+				status = HttpStatus.OK;
+				return new ResortBookingResponse(userOpt.get(), status);
+			} else {
+				throw new ResortBookingException("User not found with email: " + email);
+			}
+		} catch (ResortBookingException e) {
+			message = e.getMessage();
+		} catch (Exception e) {
+			message = "Error retrieving user: " + e.getMessage();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResortBookingResponse(message, status);
+	}
+
+	// Get user by phone
+	@GetMapping("/phone")
+	public ResortBookingResponse getUserByPhone(@RequestParam String phone) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		String message = "";
+
+		try {
+			Optional<User> userOpt = userService.getUserByPhone(phone);
+			if (userOpt.isPresent()) {
+				status = HttpStatus.OK;
+				return new ResortBookingResponse(userOpt.get(), status);
+			} else {
+				throw new ResortBookingException("User not found with phone: " + phone);
+			}
+		} catch (ResortBookingException e) {
+			message = e.getMessage();
+		} catch (Exception e) {
+			message = "Error retrieving user: " + e.getMessage();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResortBookingResponse(message, status);
+	}
+
+	// Get all users
+	@GetMapping
+	public ResortBookingResponse getAllUsers() {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		String message = "";
+
+		try {
+			List<User> users = userService.getAllUsers();
+			status = HttpStatus.OK;
+			return new ResortBookingResponse(users, status);
+		} catch (Exception e) {
+			message = "Error retrieving user list: " + e.getMessage();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResortBookingResponse(message, status);
+	}
+
+	// Delete user by ID
+	@DeleteMapping("/{id}")
+	public ResortBookingResponse deleteUser(@PathVariable Long id) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		String message = "";
+
+		try {
+			Optional<User> userOpt = userService.getUserById(id);
+			if (userOpt.isPresent()) {
+				userService.deleteUser(id);
+				status = HttpStatus.OK;
+				return new ResortBookingResponse("User deleted successfully", status);
+			} else {
+				throw new ResortBookingException("User not found with ID: " + id);
+			}
+		} catch (ResortBookingException e) {
+			message = e.getMessage();
+		} catch (Exception e) {
+			message = "Error deleting user: " + e.getMessage();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResortBookingResponse(message, status);
+	}
 }
