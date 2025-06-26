@@ -12,4 +12,6 @@ public interface HotelService {
     List<HotelDto> getAllHotels() throws ResortBookingException;
 
     HotelDto getHotelById(Long id) throws ResortBookingException;
+
+	String updateHotel(Long id, HotelDto hotelDto);
 }

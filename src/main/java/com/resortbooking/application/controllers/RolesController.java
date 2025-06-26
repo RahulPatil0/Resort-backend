@@ -171,28 +171,6 @@ public class RolesController {
 		return new ResortBookingResponse(message, status);
 	}
 
-	// 🔹 Get Role by Name
-	@GetMapping("/search")
-	public ResortBookingResponse getRoleByName(@RequestParam("name") String roleName) {
-		String message = "";
-		HttpStatus status = HttpStatus.OK;
-
-		try {
-			Optional<Roles> role = rolesService.getRoleByName(roleName);
-			if (role.isPresent()) {
-				message = "Role retrieved successfully.";
-			} else {
-				message = "Role not found by name.";
-				status = HttpStatus.NOT_FOUND;
-			}
-		} catch (Exception e) {
-			message = "Error retrieving role by name: " + e.getMessage();
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-
-		return new ResortBookingResponse(message, status);
-	}
-
 	// 🔹 Update Role
 	@PutMapping("/{id}")
 	public ResortBookingResponse updateRole(@PathVariable Long id, @RequestBody Roles updatedRole) {

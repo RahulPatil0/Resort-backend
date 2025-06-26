@@ -240,34 +240,7 @@ public class HotelReviewController {
 
 		return new ResortBookingResponse(message, status);
 	}
-
-	// 🔹 Get recent reviews by hotel ID
-	@GetMapping("/hotel/{hotelId}/recent")
-	public ResortBookingResponse getRecentReviewsByHotel(@PathVariable Long hotelId) {
-		String message = null;
-		HttpStatus status = HttpStatus.OK;
-
-		try {
-			HotelDto hotelDto = hotelService.getHotelById(hotelId);
-			if (hotelDto != null) {
-				Hotel hotel = HotelMapper.toEntity(hotelDto);
-				List<HotelReview> reviews = reviewService.getRecentReviewsByHotel(hotel);
-				message = "Recent reviews retrieved successfully.";
-				logger.info("Fetched recent reviews for hotel ID {}", hotelId);
-			} else {
-				message = "Hotel not found";
-				status = HttpStatus.NOT_FOUND;
-				logger.warn("Hotel with ID {} not found while fetching recent reviews", hotelId);
-			}
-		} catch (Exception e) {
-			message = "Error while retrieving recent hotel reviews: " + e.getMessage();
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			logger.error("Error retrieving recent hotel reviews for hotel ID {}: {}", hotelId, e.getMessage(), e);
-		}
-
-		return new ResortBookingResponse(message, status);
-	}
-
+	
 	// 🔹 Get reviews by user ID
 	@GetMapping("/user/{userId}")
 	public ResortBookingResponse getReviewsByUser(@PathVariable Long userId) {

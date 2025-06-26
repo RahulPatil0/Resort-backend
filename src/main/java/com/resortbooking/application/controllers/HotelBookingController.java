@@ -6,18 +6,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.resortbooking.application.dto.HotelDto;
 import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.models.HotelBooking;
 import com.resortbooking.application.models.User;
@@ -30,7 +20,6 @@ import com.resortbooking.application.services.UserService;
 @RequestMapping("/api/bookings")
 public class HotelBookingController {
 
-  
     @Autowired
     private HotelBookingService hotelBookingService;
 
@@ -42,43 +31,16 @@ public class HotelBookingController {
 
     @PostMapping
     public ResortBookingResponse createBooking(@RequestBody HotelBooking booking) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String message = "";
-
         try {
             booking.setCreatedAt(LocalDate.now().atStartOfDay());
             booking.setUpdatedAt(LocalDate.now().atStartOfDay());
             HotelBooking savedBooking = hotelBookingService.saveBooking(booking);
-            status = HttpStatus.CREATED;
-            return new ResortBookingResponse(savedBooking, status);
+            return new ResortBookingResponse(savedBooking, HttpStatus.CREATED);
         } catch (ResortBookingException e) {
-            message = e.getMessage();
+            return new ResortBookingResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            message = "Error creating booking: " + e.getMessage();
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            return new ResortBookingResponse("Error creating booking: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResortBookingResponse(message, status);
-    }
-
-    @GetMapping("/{id}")
-    public ResortBookingResponse getBookingById(@PathVariable Long id) {
-        HttpStatus status = HttpStatus.NOT_FOUND;
-        String message = "Booking not found with ID: " + id;
-
-        try {
-            Optional<HotelBooking> booking = hotelBookingService.getBookingById(id);
-            if (booking.isPresent()) {
-                return new ResortBookingResponse(booking.get(), HttpStatus.OK);
-            }
-        } catch (ResortBookingException e) {
-            message = e.getMessage();
-        }catch (Exception e) {
-            message = "Error retrieving booking: " + e.getMessage();
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
-        return new ResortBookingResponse(message, status);
     }
 
     @GetMapping
@@ -108,8 +70,8 @@ public class HotelBookingController {
     @GetMapping("/hotel/{hotelId}")
     public ResortBookingResponse getBookingsByHotel(@PathVariable Long hotelId) {
         try {
-            HotelDto hotel = hotelService.getHotelById(hotelId);
-            return new ResortBookingResponse(hotel, HttpStatus.OK);
+            List<HotelBooking> bookings = hotelBookingService.getBookingsByHotelId(hotelId);
+            return new ResortBookingResponse(bookings, HttpStatus.OK);
         } catch (Exception e) {
             return new ResortBookingResponse("Error retrieving hotel bookings: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -137,7 +99,7 @@ public class HotelBookingController {
 
     @GetMapping("/date-range")
     public ResortBookingResponse getBookingsByDateRange(@RequestParam LocalDate start,
-                                                         @RequestParam LocalDate end) {
+                                                        @RequestParam LocalDate end) {
         try {
             List<HotelBooking> bookings = hotelBookingService.getBookingsBetweenDates(start, end);
             return new ResortBookingResponse(bookings, HttpStatus.OK);
@@ -148,7 +110,7 @@ public class HotelBookingController {
 
     @GetMapping("/hotel-status")
     public ResortBookingResponse getBookingsByStatusAndHotel(@RequestParam String bookingStatus,
-                                                              @RequestParam Long hotelId) {
+                                                             @RequestParam Long hotelId) {
         try {
             List<HotelBooking> bookings = hotelBookingService.getBookingsByStatusAndHotelId(bookingStatus, hotelId);
             return new ResortBookingResponse(bookings, HttpStatus.OK);
@@ -195,6 +157,32 @@ public class HotelBookingController {
             }
         } catch (Exception e) {
             return new ResortBookingResponse("Error updating booking: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{id}/invoice")
+    public ResortBookingResponse generateInvoice(@PathVariable Long id) {
+        try {
+            Optional<HotelBooking> bookingOpt = hotelBookingService.getBookingById(id);
+            if (bookingOpt.isPresent()) {
+                HotelBooking b = bookingOpt.get();
+                String invoice = String.format(
+                    "Invoice for Booking ID: %d\nUser ID: %d\nHotel ID: %d\nCheck-In: %s\nCheck-Out: %s\nTotal: ₹%.2f\nPaid: ₹%.2f\nStatus: %s",
+                    b.getId(),
+                    b.getUser().getId(),
+                    b.getHotel().getId(),
+                    b.getCheckInDate(),
+                    b.getCheckOutDate(),
+                    b.getTotalAmount(),
+                    b.getPaidAmount(),
+                    b.getPaymentStatus()
+                );
+                return new ResortBookingResponse(invoice, HttpStatus.OK);
+            } else {
+                return new ResortBookingResponse("Booking not found", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResortBookingResponse("Error generating invoice: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

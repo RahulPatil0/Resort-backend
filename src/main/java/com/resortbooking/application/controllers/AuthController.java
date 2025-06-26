@@ -1,66 +1,69 @@
-package com.resortbooking.application.controllers;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.LockedException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.resortbooking.application.dto.LoginRequest;
-import com.resortbooking.application.dto.LoginResponse;
-import com.resortbooking.application.mappers.JwtMapper;
-
-@RestController
-@RequestMapping("/api/auth")
-public class AuthController {
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtMapper jwtMapper;
-
-    // Sign in method for generating JWT token
-    @PostMapping("/signin")
-    public ResponseEntity<?> signIn(@RequestBody LoginRequest request) {
-        try {
-            // Authenticate the user
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-
-            // Set authentication in the SecurityContextHolder
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            // Extract roles (authorities) from authentication
-            List<String> roles = authentication.getAuthorities().stream()
-                    .map(grantedAuthority -> grantedAuthority.getAuthority().replace("ROLE_", ""))
-                    .collect(Collectors.toList());
-
-            // Generate JWT token with username and roles
-            String token = jwtMapper.generateToken(request.getUsername(), roles);
-
-            // Return the generated token
-            return ResponseEntity.ok(new LoginResponse(token));
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-        } catch (LockedException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Account is locked");
-        } catch (DisabledException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Account is disabled");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Authentication failed: " + e.getMessage());
-        }
-    }
-}
+//// Assuming you're using Spring Boot with JWT support
+//// Directory: com.resortbooking.application.controllers
+//
+//package com.resortbooking.application.controllers;
+//
+//import com.resortbooking.application.dto.*;
+//import com.resortbooking.application.exception.ResortBookingException;
+//import com.resortbooking.application.mappers.JwtMapper;
+//import com.resortbooking.application.models.User;
+//import com.resortbooking.application.response.ResortBookingResponse;
+//import com.resortbooking.application.services.UserService;
+//import jakarta.servlet.http.HttpServletRequest;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.security.authentication.AuthenticationManager;
+//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.web.bind.annotation.*;
+//
+//@RestController
+//@RequestMapping("/api/auth")
+//public class AuthController {
+//
+//    @Autowired
+//    private AuthenticationManager authenticationManager;
+//
+//    @Autowired
+//    private JwtMapper jwtMapper;
+//
+//    @Autowired
+//    private UserService userService;
+//
+//    @PostMapping("/register")
+//    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+//        try {
+//            userService.registerUser(request);
+//            return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
+//        } catch (ResortBookingException e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//        }
+//    }
+//
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+//        try {
+//            Authentication auth = authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+//
+//            SecurityContextHolder.getContext().setAuthentication(auth);
+//
+//            String token = jwtMapper.generateToken(request.getUsername());
+//            return ResponseEntity.ok(new LoginResponse(token));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+//        }
+//    }
+//
+//    @PostMapping("/forgot-password")
+//    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+//        try {
+//            userService.resetPassword(request.getEmail());
+//            return ResponseEntity.ok("Password reset instructions sent to your email.");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process request");
+//        }
+//    }
+//}

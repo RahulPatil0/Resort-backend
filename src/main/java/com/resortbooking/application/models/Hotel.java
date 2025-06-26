@@ -59,6 +59,9 @@ public class Hotel {
 
 	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<HotelPolicy> policies = new HashSet<>();
+	
+	@OneToOne(mappedBy = "hotel")
+	private Documents documents;
 
 	public Set<HotelPolicy> getPolicies() {
 		return policies;
@@ -159,14 +162,15 @@ public class Hotel {
 		this.longitude = longitude;
 	}
 
-	// ✅ Getters and Setters for amenities
-//	public Set<Amenity> getAmenities() {
-//		return amenities;
-//	}
-//
-//	public void setAmenities(Set<Amenity> amenities) {
-//		this.amenities = amenities;
-//	}
+	
+
+	public Documents getDocuments() {
+		return documents;
+	}
+
+	public void setDocuments(Documents documents) {
+		this.documents = documents;
+	}
 
 	public List<HotelPhotos> getHotelPhotos() {
 		return hotelPhotos;

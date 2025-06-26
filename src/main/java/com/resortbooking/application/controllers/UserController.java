@@ -28,61 +28,6 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@GetMapping("/hi")
-	public String hi() {
-		return "Hi";
-	}
-
-	// Register a new user
-	@PostMapping("/register")
-	public ResortBookingResponse registerUser(@RequestBody User user) {
-		HttpStatus status = HttpStatus.BAD_REQUEST;
-		String message = "";
-
-		try {
-			if (userService.emailExists(user.getEmail())) {
-				throw new ResortBookingException("Email already exists");
-			} else if (userService.phoneExists(user.getPhoneNumber())) {
-				throw new ResortBookingException("Phone number already exists");
-			} else {
-				User savedUser = userService.registerUser(user);
-				status = HttpStatus.OK;
-				return new ResortBookingResponse(savedUser, status);
-			}
-		} catch (ResortBookingException e) {
-			message = e.getMessage();
-		} catch (Exception e) {
-			message = "Error registering user: " + e.getMessage();
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-
-		return new ResortBookingResponse(message, status);
-	}
-
-	// Get user by ID
-	@GetMapping("/{id}")
-	public ResortBookingResponse getUserById(@PathVariable Long id) {
-		HttpStatus status = HttpStatus.BAD_REQUEST;
-		String message = "";
-
-		try {
-			Optional<User> userOpt = userService.getUserById(id);
-			if (userOpt.isPresent()) {
-				status = HttpStatus.OK;
-				return new ResortBookingResponse(userOpt.get(), status);
-			} else {
-				throw new ResortBookingException("User not found with ID: " + id);
-			}
-		} catch (ResortBookingException e) {
-			message = e.getMessage();
-		} catch (Exception e) {
-			message = "Error retrieving user: " + e.getMessage();
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-
-		return new ResortBookingResponse(message, status);
-	}
-
 	// Get user by email
 	@GetMapping("/email")
 	public ResortBookingResponse getUserByEmail(@RequestParam String email) {
@@ -96,30 +41,6 @@ public class UserController {
 				return new ResortBookingResponse(userOpt.get(), status);
 			} else {
 				throw new ResortBookingException("User not found with email: " + email);
-			}
-		} catch (ResortBookingException e) {
-			message = e.getMessage();
-		} catch (Exception e) {
-			message = "Error retrieving user: " + e.getMessage();
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-
-		return new ResortBookingResponse(message, status);
-	}
-
-	// Get user by phone
-	@GetMapping("/phone")
-	public ResortBookingResponse getUserByPhone(@RequestParam String phone) {
-		HttpStatus status = HttpStatus.BAD_REQUEST;
-		String message = "";
-
-		try {
-			Optional<User> userOpt = userService.getUserByPhone(phone);
-			if (userOpt.isPresent()) {
-				status = HttpStatus.OK;
-				return new ResortBookingResponse(userOpt.get(), status);
-			} else {
-				throw new ResortBookingException("User not found with phone: " + phone);
 			}
 		} catch (ResortBookingException e) {
 			message = e.getMessage();

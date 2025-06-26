@@ -1,7 +1,6 @@
 package com.resortbooking.application.services.impl;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,5 +83,11 @@ public class HotelServiceImpl implements HotelService {
 //            System.err.println("Error fetching hotel by ID: " + e.getMessage());
 			throw new ResortBookingException("Error fetching hotel by ID: " + e.getMessage());
 		}
+	}
+
+	@Override
+	public String updateHotel(Long id, HotelDto hotelDto) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

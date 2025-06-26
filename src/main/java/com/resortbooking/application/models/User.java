@@ -47,8 +47,8 @@ public class User {
 	@OneToMany(mappedBy="user") 
 	private List<HotelReview> hotelReviews;
 	
-//	@OneToMany(mappedBy="user")
-//	private List<UserWishlist> wishList;
+	@OneToMany(mappedBy="user")
+	private List<UserWishlist> wishList;
 //	
 	@OneToMany(mappedBy="user")
 	private List<HotelBooking> hotelBooking;

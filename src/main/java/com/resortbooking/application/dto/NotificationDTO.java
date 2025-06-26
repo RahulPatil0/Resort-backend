@@ -45,6 +45,12 @@ public class NotificationDTO {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
+	@Override
+	public String toString() {
+		return "NotificationDTO [id=" + id + ", message=" + message + ", type=" + type + ", read=" + read
+				+ ", timestamp=" + timestamp + ", userId=" + userId + "]";
+	}
+	
     
     
 

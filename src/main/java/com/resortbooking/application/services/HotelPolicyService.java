@@ -11,4 +11,6 @@ public interface HotelPolicyService {
     List<HotelPolicyDTO> getPoliciesByHotel(Long hotelId) throws ResortBookingException;
     
     void deletePolicy(Long id) throws ResortBookingException;
+
+    HotelPolicyDTO updatePolicy(Long id, HotelPolicyDTO dto) throws ResortBookingException;
 }
