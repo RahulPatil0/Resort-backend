@@ -24,16 +24,13 @@ public class HotelPolicyServiceImpl implements HotelPolicyService {
     @Autowired
     private HotelRepository hotelRepo;
 
-    @Autowired
-    private HotelPolicyMapper mapper; // ✅ Fixed: This should be autowired
-
     @Override
     public HotelPolicyDTO addPolicy(HotelPolicyDTO dto) throws ResortBookingException {
         try {
             Hotel hotel = hotelRepo.findById(dto.getHotelId())
                     .orElseThrow(() -> new ResortBookingException("Hotel not found with ID: " + dto.getHotelId()));
-            HotelPolicy policy = mapper.toEntity(dto, hotel);
-            return mapper.toDTO(policyRepo.save(policy));
+            HotelPolicy policy = HotelPolicyMapper.toEntity(dto, hotel);
+            return HotelPolicyMapper.toDTO(policyRepo.save(policy));
         } catch (Exception e) {
             throw new ResortBookingException("Error adding policy: " + e.getMessage());
         }
@@ -43,7 +40,7 @@ public class HotelPolicyServiceImpl implements HotelPolicyService {
     public List<HotelPolicyDTO> getPoliciesByHotel(Long hotelId) throws ResortBookingException {
         try {
             return policyRepo.findByHotelId(hotelId).stream()
-                    .map(mapper::toDTO)
+                    .map(HotelPolicyMapper::toDTO)
                     .collect(Collectors.toList());
         } catch (Exception e) {
             throw new ResortBookingException("Error fetching policies by hotel: " + e.getMessage());
@@ -74,7 +71,7 @@ public class HotelPolicyServiceImpl implements HotelPolicyService {
             existing.setHotel(hotel); // 🛠 set hotel entity instead of hotelId
 
             HotelPolicy saved = policyRepo.save(existing);
-            return mapper.toDTO(saved);
+            return HotelPolicyMapper.toDTO(saved);
         } catch (Exception e) {
             throw new ResortBookingException("Error updating policy: " + e.getMessage());
         }

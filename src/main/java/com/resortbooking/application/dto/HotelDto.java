@@ -3,6 +3,7 @@ package com.resortbooking.application.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 /**
  * DTO for transferring Hotel data between layers.
@@ -24,10 +25,28 @@ public class HotelDto {
     private Double longitude;
 
     private List<HotelPhotosDto> hotelPhotos;
+    private Set<AmenityDTO> amenities;
+    private Set<HotelPolicyDTO> policyDetails;
 
     // Getters & Setters
 
-    public Long getId() {
+    public Set<HotelPolicyDTO> getPolicyDetails() {
+		return policyDetails;
+	}
+
+	public void setPolicyDetails(Set<HotelPolicyDTO> policyDetails) {
+		this.policyDetails = policyDetails;
+	}
+
+	public Set<AmenityDTO> getAmenities() {
+		return amenities;
+	}
+
+	public void setAmenities(Set<AmenityDTO> amenities) {
+		this.amenities = amenities;
+	}
+
+	public Long getId() {
         return id;
     }
 

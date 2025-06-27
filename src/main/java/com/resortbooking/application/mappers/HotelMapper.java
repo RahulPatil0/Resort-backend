@@ -1,14 +1,20 @@
 package com.resortbooking.application.mappers;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 
+import com.resortbooking.application.dto.AmenityDTO;
 import com.resortbooking.application.dto.HotelDto;
 import com.resortbooking.application.dto.HotelPhotosDto;
+import com.resortbooking.application.dto.HotelPolicyDTO;
+import com.resortbooking.application.models.Amenity;
 import com.resortbooking.application.models.Hotel;
 import com.resortbooking.application.models.HotelPhotos;
+import com.resortbooking.application.models.HotelPolicy;
 
 public class HotelMapper {
 
@@ -25,6 +31,19 @@ public class HotelMapper {
         }
         dto.setHotelPhotos(hotelPhotosDtos);
         
+        Set<AmenityDTO> amenties = new HashSet<>();
+        for(Amenity amenity: hotel.getAmenities()) {
+        	AmenityDTO amenityDTO = AmenityMapper.toDTO(amenity);
+        	amenties.add(amenityDTO);
+        }
+        dto.setAmenities(amenties);
+        
+        Set<HotelPolicyDTO> policyDTOs = new HashSet<>();
+        for(HotelPolicy policy : hotel.getPolicies()) {
+        	HotelPolicyDTO policyDTO = HotelPolicyMapper.toDTO(policy);
+        	policyDTOs.add(policyDTO);
+        }
+        dto.setPolicyDetails(policyDTOs);
         return dto;
     }
 

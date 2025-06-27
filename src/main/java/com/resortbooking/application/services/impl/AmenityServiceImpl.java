@@ -19,14 +19,11 @@ public class AmenityServiceImpl implements AmenityService {
     @Autowired
     private AmenityRepository amenityRepository;
 
-    @Autowired
-    private AmenityMapper amenityMapper;
-
     @Override
     public AmenityDTO createAmenity(AmenityDTO amenityDTO) throws ResortBookingException {
         try {
-            Amenity amenity = amenityMapper.toEntity(amenityDTO);
-            return amenityMapper.toDTO(amenityRepository.save(amenity));
+            Amenity amenity = AmenityMapper.toEntity(amenityDTO);
+            return AmenityMapper.toDTO(amenityRepository.save(amenity));
         } catch (Exception e) {
             // Log the exception
 //            System.err.println("Error creating amenity: " + e.getMessage());
@@ -38,7 +35,7 @@ public class AmenityServiceImpl implements AmenityService {
     public List<AmenityDTO> getAllAmenities() throws ResortBookingException{
         try {
             return amenityRepository.findAll().stream()
-                    .map(amenityMapper::toDTO)
+                    .map(AmenityMapper::toDTO)
                     .collect(Collectors.toList());
         } catch (Exception e) {
             // Log the exception
@@ -51,7 +48,7 @@ public class AmenityServiceImpl implements AmenityService {
     public AmenityDTO getAmenityById(Long id) throws ResortBookingException{
         try {
             return amenityRepository.findById(id)
-                    .map(amenityMapper::toDTO)
+                    .map(AmenityMapper::toDTO)
                     .orElseThrow(() -> new RuntimeException("Amenity not found"));
         } catch (Exception e) {
             // Log the exception

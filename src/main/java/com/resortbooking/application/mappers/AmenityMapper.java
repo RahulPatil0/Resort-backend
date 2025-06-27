@@ -2,24 +2,22 @@ package com.resortbooking.application.mappers;
 
 import com.resortbooking.application.dto.AmenityDTO;
 import com.resortbooking.application.models.Amenity;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AmenityMapper {
 
-    public AmenityDTO toDTO(Amenity amenity) {
+    public static AmenityDTO toDTO(Amenity amenity) {
         AmenityDTO dto = new AmenityDTO();
-        dto.setId(amenity.getId());
-        dto.setName(amenity.getName());
-        dto.setCategory(amenity.getCategory());
+        BeanUtils.copyProperties(amenity, dto);
         return dto;
     }
 
-    public Amenity toEntity(AmenityDTO dto) {
+    public static Amenity toEntity(AmenityDTO dto) {
         Amenity amenity = new Amenity();
-        amenity.setId(dto.getId());
-        amenity.setName(dto.getName());
-        amenity.setCategory(dto.getCategory());
+        BeanUtils.copyProperties(dto, amenity);
         return amenity;
     }
 }

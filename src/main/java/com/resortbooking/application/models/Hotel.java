@@ -78,6 +78,14 @@ public class Hotel {
 	}
 
 	
+	public Set<Amenity> getAmenities() {
+		return amenities;
+	}
+
+	public void setAmenities(Set<Amenity> amenities) {
+		this.amenities = amenities;
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}

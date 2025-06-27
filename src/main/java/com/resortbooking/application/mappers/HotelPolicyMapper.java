@@ -1,5 +1,6 @@
 package com.resortbooking.application.mappers;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import com.resortbooking.application.dto.HotelPolicyDTO;
@@ -9,21 +10,15 @@ import com.resortbooking.application.models.HotelPolicy;
 @Component
 public class HotelPolicyMapper {
 
-    public HotelPolicyDTO toDTO(HotelPolicy entity) {
+    public static HotelPolicyDTO toDTO(HotelPolicy policy) {
         HotelPolicyDTO dto = new HotelPolicyDTO();
-        dto.setId(entity.getId());
-        dto.setPolicyType(entity.getPolicyType());
-        dto.setDescription(entity.getDescription());
-        dto.setHotelId(entity.getHotel().getId());
+        BeanUtils.copyProperties(policy, dto);
         return dto;
     }
 
-    public HotelPolicy toEntity(HotelPolicyDTO dto, Hotel hotel) {
+    public static HotelPolicy toEntity(HotelPolicyDTO dto, Hotel hotel) {
         HotelPolicy policy = new HotelPolicy();
-        policy.setId(dto.getId());
-        policy.setPolicyType(dto.getPolicyType());
-        policy.setDescription(dto.getDescription());
-        policy.setHotel(hotel);
+        BeanUtils.copyProperties(dto, policy);
         return policy;
     }
 }

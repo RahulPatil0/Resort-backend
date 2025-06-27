@@ -8,34 +8,32 @@ import java.util.Objects;
 @Table(name = "hotel_photos")
 public class HotelPhotos {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false)
-    private String photoUrl;
-    
-    @Column(name="caption")
-    private String caption;
+	@Column(nullable = false)
+	private String photoUrl;
 
-    @Column(name="uploadedAt")
-    private LocalDateTime uploadedAt;
+	@Column(name = "caption")
+	private String caption;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hotel_id") // Foreign key referencing Hotel
-    private Hotel hotel;
+	@Column(name = "uploadedAt")
+	private LocalDateTime uploadedAt;
 
-    // Getters and Setters
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "hotel_id") // Foreign key referencing Hotel
+	private Hotel hotel;
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getPhotoUrl() {
+	public String getPhotoUrl() {
 		return photoUrl;
 	}
 
@@ -44,25 +42,22 @@ public class HotelPhotos {
 	}
 
 	public String getCaption() {
-        return caption;
-    }
+		return caption;
+	}
 
-    public void setCaption(String caption) {
-        this.caption = caption;
-    }
+	public void setCaption(String caption) {
+		this.caption = caption;
+	}
 
-    public LocalDateTime getUploadedAt() {
-        return uploadedAt;
-    }
+	public LocalDateTime getUploadedAt() {
+		return uploadedAt;
+	}
 
-    public void setUploadedAt(LocalDateTime uploadedAt) {
-        this.uploadedAt = uploadedAt;
-    }
-    
+	public void setUploadedAt(LocalDateTime uploadedAt) {
+		this.uploadedAt = uploadedAt;
+	}
 
- 
-
-    public Hotel getHotel() {
+	public Hotel getHotel() {
 		return hotel;
 	}
 
@@ -70,7 +65,7 @@ public class HotelPhotos {
 		this.hotel = hotel;
 	}
 
-    @Override
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -84,21 +79,16 @@ public class HotelPhotos {
 				&& Objects.equals(uploadedAt, other.uploadedAt);
 	}
 
-	
-
-    @Override
+	@Override
 	public int hashCode() {
 		return Objects.hash(caption, hotel, id, photoUrl, uploadedAt);
 	}
 
-    // toString
+	// toString
 
-    @Override
-    public String toString() {
-        return "HotelPhotos{" +
-                "id=" + id +
-                ", imageUrl='" + photoUrl + '\'' +
-                ", hotelId=" + (hotel != null ? hotel.getId() : null) +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "HotelPhotos{" + "id=" + id + ", imageUrl='" + photoUrl + '\'' + ", hotelId="
+				+ (hotel != null ? hotel.getId() : null) + '}';
+	}
 }
