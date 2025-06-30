@@ -45,6 +45,12 @@ public class Hotel {
 	@Column(name = "price_perNight")
 	private BigDecimal pricePerNight;
 	
+	@Column(name = "check_in_time")
+	private LocalDateTime checkInTime;
+	
+	@Column(name = "check_out_time")
+	private LocalDateTime checkOutTime;
+	
 	@Column(name = "created_at")
 	private LocalDateTime createdAt;
 	
@@ -63,15 +69,14 @@ public class Hotel {
 	@OneToOne(mappedBy = "hotel")
 	private Documents documents;
 
+	// Getters & Setters
 	public Set<HotelPolicy> getPolicies() {
 		return policies;
 	}
-
+	
 	public void setPolicies(Set<HotelPolicy> policies) {
 		this.policies = policies;
 	}
-
-	// Getters & Setters
 
 	public Long getId() {
 		return id;
@@ -168,9 +173,23 @@ public class Hotel {
 
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
+	}	
+
+	public LocalDateTime getCheckInTime() {
+		return checkInTime;
 	}
 
-	
+	public void setCheckInTime(LocalDateTime checkInTime) {
+		this.checkInTime = checkInTime;
+	}
+
+	public LocalDateTime getCheckOutTime() {
+		return checkOutTime;
+	}
+
+	public void setCheckOutTime(LocalDateTime checkOutTime) {
+		this.checkOutTime = checkOutTime;
+	}
 
 	public Documents getDocuments() {
 		return documents;
