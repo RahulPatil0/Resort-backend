@@ -24,7 +24,7 @@ import com.resortbooking.application.services.HotelService;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/hotels")
 public class HotelController {
 
