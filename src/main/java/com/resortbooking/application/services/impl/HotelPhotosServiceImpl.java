@@ -3,7 +3,7 @@ package com.resortbooking.application.services.impl;
 import com.resortbooking.application.dao.HotelPhotosRepository;
 import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.models.Hotel;
-import com.resortbooking.application.models.HotelPhotos;
+import com.resortbooking.application.models.Media;
 import com.resortbooking.application.services.HotelPhotosService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class HotelPhotosServiceImpl implements HotelPhotosService {
     private HotelPhotosRepository hotelPhotosRepository;
 
     @Override
-    public HotelPhotos savePhoto(HotelPhotos photo) throws ResortBookingException{
+    public Media savePhoto(Media photo) throws ResortBookingException{
         try {
             return hotelPhotosRepository.save(photo);
         } catch (Exception e) {
@@ -30,7 +30,7 @@ public class HotelPhotosServiceImpl implements HotelPhotosService {
     }
 
     @Override
-    public Optional<HotelPhotos> getPhotoById(Long id) throws ResortBookingException{
+    public Optional<Media> getPhotoById(Long id) throws ResortBookingException{
         try {
             return hotelPhotosRepository.findById(id);
         } catch (Exception e) {
@@ -41,7 +41,7 @@ public class HotelPhotosServiceImpl implements HotelPhotosService {
     }
 
     @Override
-    public List<HotelPhotos> getPhotosByHotel(Hotel hotel) throws ResortBookingException{
+    public List<Media> getPhotosByHotel(Hotel hotel) throws ResortBookingException{
         try {
 //            return hotelPhotosRepository.findByHotel(hotel);
         	return null;
@@ -53,7 +53,7 @@ public class HotelPhotosServiceImpl implements HotelPhotosService {
     }
 
     @Override
-    public List<HotelPhotos> getPhotosByHotelSorted(Hotel hotel) throws ResortBookingException{
+    public List<Media> getPhotosByHotelSorted(Hotel hotel) throws ResortBookingException{
         try {
 //            return hotelPhotosRepository.findByHotelOrderByUploadedAtDesc(hotel);
         	return null;
@@ -65,7 +65,7 @@ public class HotelPhotosServiceImpl implements HotelPhotosService {
     }
 
     @Override
-    public Optional<HotelPhotos> getPrimaryPhotoByHotel(Hotel hotel) throws ResortBookingException{
+    public Optional<Media> getPrimaryPhotoByHotel(Hotel hotel) throws ResortBookingException{
         try {
 //            List<HotelPhotos> primaryList = hotelPhotosRepository.findByHotelAndIsPrimaryTrue(hotel);
 //            return primaryList.isEmpty() ? Optional.empty() : Optional.of(primaryList.get(0));

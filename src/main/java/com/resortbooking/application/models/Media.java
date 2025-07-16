@@ -6,14 +6,22 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "hotel_photos")
-public class HotelPhotos {
+public class Media {
 
+	private enum MediaType{
+		PHOTO,
+		VIDEO
+	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(name = "media_type")
+	private MediaType mediaType;
 
-	@Column(nullable = false)
-	private String photoUrl;
+	@Column(name = "url", nullable = false)
+	private String url;
 
 	@Column(name = "caption")
 	private String caption;
@@ -24,6 +32,10 @@ public class HotelPhotos {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hotel_id") // Foreign key referencing Hotel
 	private Hotel hotel;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "room_id")
+	private Rooms rooms;
 
 	public Long getId() {
 		return id;
@@ -34,11 +46,11 @@ public class HotelPhotos {
 	}
 
 	public String getPhotoUrl() {
-		return photoUrl;
+		return url;
 	}
 
 	public void setPhotoUrl(String photoUrl) {
-		this.photoUrl = photoUrl;
+		this.url = photoUrl;
 	}
 
 	public String getCaption() {
@@ -65,6 +77,22 @@ public class HotelPhotos {
 		this.hotel = hotel;
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public Rooms getRooms() {
+		return rooms;
+	}
+
+	public void setRooms(Rooms rooms) {
+		this.rooms = rooms;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -73,22 +101,21 @@ public class HotelPhotos {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		HotelPhotos other = (HotelPhotos) obj;
+		Media other = (Media) obj;
 		return Objects.equals(caption, other.caption) && Objects.equals(hotel, other.hotel)
-				&& Objects.equals(id, other.id) && Objects.equals(photoUrl, other.photoUrl)
+				&& Objects.equals(id, other.id) && Objects.equals(url, other.url)
 				&& Objects.equals(uploadedAt, other.uploadedAt);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(caption, hotel, id, photoUrl, uploadedAt);
+		return Objects.hash(caption, hotel, id, url, uploadedAt);
 	}
 
 	// toString
-
 	@Override
 	public String toString() {
-		return "HotelPhotos{" + "id=" + id + ", imageUrl='" + photoUrl + '\'' + ", hotelId="
+		return "HotelPhotos{" + "id=" + id + ", imageUrl='" + url + '\'' + ", hotelId="
 				+ (hotel != null ? hotel.getId() : null) + '}';
 	}
 }

@@ -57,17 +57,17 @@ public class Hotel {
 	@Column(name = "last_updated_at")
 	private LocalDateTime lastUpdatedAt;
 
-	@OneToMany(mappedBy = "hotel")
-	private List<HotelPhotos> hotelPhotos;
+	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
+	private List<Media> media;
 
-	@OneToMany(mappedBy = "hotel")
+	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
 	private Set<Amenity> amenities = new HashSet<>();
 
-	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private Set<HotelPolicy> policies = new HashSet<>();
 	
-	@OneToOne(mappedBy = "hotel")
-	private Documents documents;
+	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
+	private List<Documents> documents;
 
 	// Getters & Setters
 	public Set<HotelPolicy> getPolicies() {
@@ -191,20 +191,20 @@ public class Hotel {
 		this.checkOutTime = checkOutTime;
 	}
 
-	public Documents getDocuments() {
+	public List<Documents> getDocuments() {
 		return documents;
 	}
 
-	public void setDocuments(Documents documents) {
+	public void setDocuments(List<Documents> documents) {
 		this.documents = documents;
 	}
 
-	public List<HotelPhotos> getHotelPhotos() {
-		return hotelPhotos;
+	public List<Media> getHotelPhotos() {
+		return media;
 	}
 
-	public void setHotelPhotos(List<HotelPhotos> hotelPhotos) {
-		this.hotelPhotos = hotelPhotos;
+	public void setHotelPhotos(List<Media> media) {
+		this.media = media;
 	}
 
 	public BigDecimal getPricePerNight() {

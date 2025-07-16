@@ -1,5 +1,7 @@
 package com.resortbooking.application.models;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,7 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "amenities")
+@Table(name = "amenity")
 public class Amenity {
 
     @Id
@@ -19,22 +21,15 @@ public class Amenity {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String name;
-
-    // Category of the amenity (optional: e.g., "Room", "Outdoor", "Adventure")
-    private String category;
+    private List<String> amenities;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
-
-    // Constructors
-    public Amenity() {}
-
-    public Amenity(String name, String category) {
-        this.name = name;
-        this.category = category;
-    }
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private Rooms rooms;
 
     // Getters and Setters
     public Long getId() {
@@ -45,27 +40,12 @@ public class Amenity {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
+	public List<String> getAmenities() {
+		return amenities;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setAmenities(List<String> amenities) {
+		this.amenities = amenities;
+	}
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public Hotel gethotel() {
-        return hotel;
-    }
-
-    public void sethotel(Hotel hotel) {
-        this.hotel = hotel;
-    }
 }

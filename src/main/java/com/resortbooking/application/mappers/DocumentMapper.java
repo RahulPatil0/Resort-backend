@@ -24,7 +24,7 @@ public class DocumentMapper {
         }
 
         DocumentsDTO dto = new DocumentsDTO();
-      BeanUtils.copyProperties(entity, dto);
+        BeanUtils.copyProperties(entity, dto);
 
         return dto;
     }

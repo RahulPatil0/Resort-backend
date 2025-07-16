@@ -13,7 +13,7 @@ import com.resortbooking.application.dto.HotelPhotosDto;
 import com.resortbooking.application.dto.HotelPolicyDTO;
 import com.resortbooking.application.models.Amenity;
 import com.resortbooking.application.models.Hotel;
-import com.resortbooking.application.models.HotelPhotos;
+import com.resortbooking.application.models.Media;
 import com.resortbooking.application.models.HotelPolicy;
 
 public class HotelMapper {
@@ -25,8 +25,8 @@ public class HotelMapper {
         
         List<HotelPhotosDto> hotelPhotosDtos = new ArrayList<>();
         
-        for(HotelPhotos hotelPhotos : hotel.getHotelPhotos()) {
-        	HotelPhotosDto hotelPhotosDto = HotelPhotosMapper.toDto(hotelPhotos);
+        for(Media media : hotel.getHotelPhotos()) {
+        	HotelPhotosDto hotelPhotosDto = HotelPhotosMapper.toDto(media);
         	hotelPhotosDtos.add(hotelPhotosDto);
         }
         dto.setHotelPhotos(hotelPhotosDtos);

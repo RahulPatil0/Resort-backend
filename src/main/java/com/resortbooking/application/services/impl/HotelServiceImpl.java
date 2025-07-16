@@ -17,7 +17,7 @@ import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.mappers.HotelMapper;
 import com.resortbooking.application.mappers.HotelPhotosMapper;
 import com.resortbooking.application.models.Hotel;
-import com.resortbooking.application.models.HotelPhotos;
+import com.resortbooking.application.models.Media;
 import com.resortbooking.application.services.HotelService;
 
 @Service
@@ -44,7 +44,7 @@ public class HotelServiceImpl implements HotelService {
 				hotel = hotelRepository.save(hotel);
 			
 				for (HotelPhotosDto photoDto : hotelDto.getHotelPhotos()) {
-				    HotelPhotos photo = HotelPhotosMapper.toEntity(photoDto);
+				    Media photo = HotelPhotosMapper.toEntity(photoDto);
 				    
 				    photo.setHotel(hotel);
 				    photo.setUploadedAt(LocalDateTime.now());

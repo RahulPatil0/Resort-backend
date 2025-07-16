@@ -15,7 +15,7 @@ import com.resortbooking.application.dto.HotelPolicyDTO;
 import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.mappers.HotelMapper;
 import com.resortbooking.application.models.Hotel;
-import com.resortbooking.application.models.HotelPhotos;
+import com.resortbooking.application.models.Media;
 import com.resortbooking.application.response.ResortBookingResponse;
 import com.resortbooking.application.services.HotelPhotosService;
 import com.resortbooking.application.services.HotelPolicyService;
@@ -142,7 +142,7 @@ public class HotelController {
     // ------------------ Hotel Photos Endpoints ------------------
 
     @PostMapping("/photos/hotel/{hotelId}")
-    public ResortBookingResponse uploadPhoto(@PathVariable Long hotelId, @Valid @RequestBody HotelPhotos photoRequest) {
+    public ResortBookingResponse uploadPhoto(@PathVariable Long hotelId, @Valid @RequestBody Media photoRequest) {
         String message = "";
         HttpStatus status = HttpStatus.OK;
         try {
@@ -160,7 +160,7 @@ public class HotelController {
                 photoRequest.setHotel(hotel);
                 photoRequest.setUploadedAt(LocalDateTime.now());
 
-                HotelPhotos saved = hotelPhotosService.savePhoto(photoRequest);
+                Media saved = hotelPhotosService.savePhoto(photoRequest);
 
                 logger.info("Photo uploaded for Hotel ID {}: {}", hotelId, saved.getId());
                 message = "Photo uploaded successfully.";
@@ -179,7 +179,7 @@ public class HotelController {
         String message = "";
         HttpStatus status = HttpStatus.OK;
         try {
-            Optional<HotelPhotos> photo = hotelPhotosService.getPhotoById(photoId);
+            Optional<Media> photo = hotelPhotosService.getPhotoById(photoId);
             if (photo.isPresent()) {
                 logger.info("Fetched photo ID {}", photoId);
                 return new ResortBookingResponse(photo.get(), status);
@@ -207,7 +207,7 @@ public class HotelController {
                 status = HttpStatus.BAD_REQUEST;
             } else {
                 Hotel hotel = HotelMapper.toEntity(hotelDto);
-                List<HotelPhotos> photos = hotelPhotosService.getPhotosByHotelSorted(hotel);
+                List<Media> photos = hotelPhotosService.getPhotosByHotelSorted(hotel);
                 return new ResortBookingResponse(photos, status);
             }
         } catch (Exception e) {
@@ -223,7 +223,7 @@ public class HotelController {
         String message = "";
         HttpStatus status = HttpStatus.NO_CONTENT;
         try {
-            Optional<HotelPhotos> photo = hotelPhotosService.getPhotoById(photoId);
+            Optional<Media> photo = hotelPhotosService.getPhotoById(photoId);
             if (photo.isPresent()) {
                 hotelPhotosService.deletePhoto(photoId);
                 logger.info("Photo ID {} deleted successfully", photoId);
