@@ -36,10 +36,10 @@ public class Rooms {
 	@JoinColumn(name = "hotel_id", nullable = false)
 	private Hotel hotel;
 
-	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "rooms", fetch = FetchType.LAZY)
 	private List<Media> media;
 
-	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "rooms", fetch = FetchType.LAZY)
 	private Set<Amenity> amenities = new HashSet<>();
 
 	// Getters and Setters

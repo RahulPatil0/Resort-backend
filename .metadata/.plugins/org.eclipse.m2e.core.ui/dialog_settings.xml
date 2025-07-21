@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="C:\Users\poorn\OneDrive\Documents\resort-app\Resort-backend"/>
 			<item value="D:\application"/>
 		</list>
 		<list key="projectNameTemplate">
