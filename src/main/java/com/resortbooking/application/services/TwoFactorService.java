@@ -16,8 +16,8 @@ public class TwoFactorService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     // ✅ Send OTP
-    public String sendOtp(String mobileNumber) {
-        String url = apiBaseUrl + apiKey + "/SMS/" + mobileNumber + "/AUTOGEN";
+    public String sendOtp(String mobileNumber, String otp) {
+        String url = apiBaseUrl + apiKey + "/SMS/" + mobileNumber +"/" + otp + "/OTP1";
         return restTemplate.getForObject(url, String.class);
     }
 

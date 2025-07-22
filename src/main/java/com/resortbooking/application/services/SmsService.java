@@ -12,7 +12,7 @@ public class SmsService {
 
     public ResponseEntity<?> sendOtpSms(String mobileNumber, String otp) {
         String otpVal = String.valueOf((int)(Math.random() * 9000) + 1000); // Generate 4-digit OTP
-        String response = twoFactorService.sendOtp(mobileNumber); // uses 2Factor API
+        String response = twoFactorService.sendOtp(mobileNumber, otpVal); // uses 2Factor API
         return ResponseEntity.ok("OTP sent. 2Factor Response: " + response);
     }
 }

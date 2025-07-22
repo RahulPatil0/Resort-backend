@@ -1,20 +1,19 @@
 package com.resortbooking.application.controllers;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.resortbooking.application.dto.OtpDTO;
-import com.resortbooking.application.mappers.OtpMapper;
 import com.resortbooking.application.services.EmailService;
 import com.resortbooking.application.services.OtpService;
 import com.resortbooking.application.services.SmsService;
 import com.resortbooking.application.services.TwoFactorService;
-
-import io.micrometer.common.util.StringUtils;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -39,8 +38,8 @@ public class OtpController {
         }
     }
 
-    @PostMapping("/verify-otp")
-    public String verifyOtp(@RequestBody Map<String, String> request) {
+//    @PostMapping("/verify-otp")
+//    public String verifyOtp(@RequestBody Map<String, String> request) {
 //        String key = request.get("emailOrMobile");
 //        String inputOtp = request.get("otp");
 //
@@ -63,7 +62,7 @@ public class OtpController {
 //        }
 //
 //        otpStore.remove(key); // One-time use
-    	TwoFactorService twoFactor = new TwoFactorService();
-        return twoFactor.sendOtp(request.get("mobile"));
-    }
+//    	TwoFactorService twoFactor = new TwoFactorService();
+//        return twoFactor.sendOtp(request.get("mobile"));
+//    }
 }

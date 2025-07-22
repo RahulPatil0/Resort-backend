@@ -42,8 +42,8 @@ public class OtpServiceImplementation implements OtpService {
         entity.setOtp(otp);
         entity.setExpiresAt(expiry);
         
-        if(key.equals("mobile")) {
-        	twoFactorService.sendOtp(otp);
+        if(!key.contains("@")) {
+        	twoFactorService.sendOtp(key, otp);
         } else if (key.equals("email")) {
         	emailService.sendOtpByEmail(key, otp);
         }
