@@ -41,7 +41,7 @@ public class OtpController {
             if (key.contains("@")) {
                 emailService.sendOtpByEmail(key, otp);
             } else {
-                smsService.sendOtpSms(key, otp); // FIXED method name
+                smsService.sendOtpSms(key); // FIXED method name
             }
             return ResponseEntity.ok("OTP sent successfully.");
         } catch (Exception e) {

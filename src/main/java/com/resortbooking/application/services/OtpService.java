@@ -30,7 +30,7 @@ public class OtpService {
             emailService.sendOtpByEmail(emailOrMobile, otp);
         } else {
             // ✅ SMS flow - corrected method name
-            smsService.sendOtpSms(emailOrMobile, otp);
+            smsService.sendOtpSms(emailOrMobile);
         }
     }
 
