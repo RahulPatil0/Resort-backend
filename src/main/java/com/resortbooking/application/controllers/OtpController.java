@@ -12,6 +12,7 @@ import com.resortbooking.application.mappers.OtpMapper;
 import com.resortbooking.application.services.EmailService;
 import com.resortbooking.application.services.OtpService;
 import com.resortbooking.application.services.SmsService;
+import com.resortbooking.application.services.TwoFactorService;
 
 import io.micrometer.common.util.StringUtils;
 
@@ -39,7 +40,7 @@ public class OtpController {
     }
 
     @PostMapping("/verify-otp")
-    public ResponseEntity<String> verifyOtp(@RequestBody Map<String, String> request) {
+    public String verifyOtp(@RequestBody Map<String, String> request) {
 //        String key = request.get("emailOrMobile");
 //        String inputOtp = request.get("otp");
 //
@@ -62,6 +63,7 @@ public class OtpController {
 //        }
 //
 //        otpStore.remove(key); // One-time use
-        return ResponseEntity.ok("OTP verified successfully.");
+    	TwoFactorService twoFactor = new TwoFactorService();
+        return twoFactor.sendOtp(request.get("mobile"));
     }
 }
