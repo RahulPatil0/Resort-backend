@@ -6,14 +6,6 @@ public class OtpDTO {
     private String otp;
     private long expiryTime;
 
-    public OtpDTO() {}
-
-    public OtpDTO(String key, String otp, long expiryTime) {
-        this.key = key;
-        this.otp = otp;
-        this.expiryTime = expiryTime;
-    }
-
     public String getKey() {
         return key;
     }
