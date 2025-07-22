@@ -48,7 +48,7 @@ public class OtpServiceImplementation implements OtpService {
         
         if(!key.contains("@")) {
         	twoFactorService.sendOtp(key, otp);
-        } else if (key.equals("email")) {
+        } else if (key.contains("@")) {
         	emailService.sendOtpByEmail(key, otp);
         }
         
