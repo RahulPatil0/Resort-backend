@@ -10,5 +10,5 @@ public interface OtpService {
 
     public String generateOtp(OtpDTO dto) throws ResortBookingException;
 
-    public boolean verifyOtp(String emailOrMobile, String enteredOtp);
+    public String verifyOtp(OtpDTO dto) throws ResortBookingException;
 }
