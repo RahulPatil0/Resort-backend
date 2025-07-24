@@ -24,7 +24,7 @@ public class HotelDto {
     private Double latitude;
     private Double longitude;
 
-    private List<HotelPhotosDto> hotelPhotos;
+    private List<MediaDto> media;
     private Set<AmenityDTO> amenities;
     private Set<HotelPolicyDTO> policyDetails;
 
@@ -150,20 +150,11 @@ public class HotelDto {
         this.longitude = longitude;
     }
 
-    public List<HotelPhotosDto> getHotelPhotos() {
-        return hotelPhotos;
-    }
+	public List<MediaDto> getMedia() {
+		return media;
+	}
 
-    public void setHotelPhotos(List<HotelPhotosDto> hotelPhotos) {
-        this.hotelPhotos = hotelPhotos;
-    }
-
-    @Override
-    public String toString() {
-        return "HotelDto [id=" + id + ", hotelName=" + hotelName + ", address=" + address + ", description="
-                + description + ", contactEmail=" + contactEmail + ", pricePerNight=" + pricePerNight + ", rating="
-                + rating + ", isAvailable=" + isAvailable + ", website=" + website + ", createdAt=" + createdAt
-                + ", lastUpdatedAt=" + lastUpdatedAt + ", latitude=" + latitude + ", longitude=" + longitude
-                + ", hotelPhotos=" + hotelPhotos + "]";
-    }
+	public void setMedia(List<MediaDto> media) {
+		this.media = media;
+	}
 }

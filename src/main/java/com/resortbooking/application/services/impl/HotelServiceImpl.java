@@ -9,13 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.resortbooking.application.dao.HotelPhotosRepository;
+import com.resortbooking.application.dao.MediaRepository;
 import com.resortbooking.application.dao.HotelRepository;
 import com.resortbooking.application.dto.HotelDto;
-import com.resortbooking.application.dto.HotelPhotosDto;
+import com.resortbooking.application.dto.MediaDto;
 import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.mappers.HotelMapper;
-import com.resortbooking.application.mappers.HotelPhotosMapper;
+import com.resortbooking.application.mappers.MediaMapper;
 import com.resortbooking.application.models.Hotel;
 import com.resortbooking.application.models.Media;
 import com.resortbooking.application.services.HotelService;
@@ -29,26 +29,26 @@ public class HotelServiceImpl implements HotelService {
 	private HotelRepository hotelRepository;
 	
 	@Autowired
-	private HotelPhotosRepository photosRepository;
+	private MediaRepository mediaRepository;
 
 	@Override
 	public String createHotel(HotelDto hotelDto) throws ResortBookingException {
 		try {
 			Hotel hotel = HotelMapper.toEntity(hotelDto);
 			
-			if(!hotelDto.getHotelPhotos().isEmpty()) {
+			if(!hotelDto.getMedia().isEmpty()) {
 				
 				hotel.setCreatedAt(LocalDateTime.now());
 				hotel.setLastUpdatedAt(LocalDateTime.now());
 				
 				hotel = hotelRepository.save(hotel);
 			
-				for (HotelPhotosDto photoDto : hotelDto.getHotelPhotos()) {
-				    Media photo = HotelPhotosMapper.toEntity(photoDto);
+				for (MediaDto mediaDto : hotelDto.getMedia()) {
+				    Media media = MediaMapper.toEntity(mediaDto);
 				    
-				    photo.setHotel(hotel);
-				    photo.setUploadedAt(LocalDateTime.now());
-				    photo = photosRepository.save(photo);
+				    media.setHotel(hotel);
+				    media.setUploadedAt(LocalDateTime.now());
+				    mediaRepository.save(media);
 				}
 				
 			} else {

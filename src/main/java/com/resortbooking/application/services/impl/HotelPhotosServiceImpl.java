@@ -1,6 +1,6 @@
 package com.resortbooking.application.services.impl;
 
-import com.resortbooking.application.dao.HotelPhotosRepository;
+import com.resortbooking.application.dao.MediaRepository;
 import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.models.Hotel;
 import com.resortbooking.application.models.Media;
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class HotelPhotosServiceImpl implements HotelPhotosService {
 
     @Autowired
-    private HotelPhotosRepository hotelPhotosRepository;
+    private MediaRepository hotelPhotosRepository;
 
     @Override
     public Media savePhoto(Media photo) throws ResortBookingException{

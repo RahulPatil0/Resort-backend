@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface HotelPhotosRepository extends JpaRepository<Media, Long> {
+public interface MediaRepository extends JpaRepository<Media, Long> {
 
 //    List<HotelPhotos> findByHotel(Hotel hotel);
 //

@@ -9,7 +9,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.resortbooking.application.dto.AmenityDTO;
 import com.resortbooking.application.dto.HotelDto;
-import com.resortbooking.application.dto.HotelPhotosDto;
+import com.resortbooking.application.dto.MediaDto;
 import com.resortbooking.application.dto.HotelPolicyDTO;
 import com.resortbooking.application.models.Amenity;
 import com.resortbooking.application.models.Hotel;
@@ -23,13 +23,13 @@ public class HotelMapper {
         
         BeanUtils.copyProperties(hotel, dto);
         
-        List<HotelPhotosDto> hotelPhotosDtos = new ArrayList<>();
+        List<MediaDto> hotelPhotosDtos = new ArrayList<>();
         
         for(Media media : hotel.getHotelPhotos()) {
-        	HotelPhotosDto hotelPhotosDto = HotelPhotosMapper.toDto(media);
+        	MediaDto hotelPhotosDto = MediaMapper.toDto(media);
         	hotelPhotosDtos.add(hotelPhotosDto);
         }
-        dto.setHotelPhotos(hotelPhotosDtos);
+        dto.setMedia(hotelPhotosDtos);
         
         Set<AmenityDTO> amenties = new HashSet<>();
         for(Amenity amenity: hotel.getAmenities()) {

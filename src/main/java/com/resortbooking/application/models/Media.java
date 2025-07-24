@@ -4,21 +4,18 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.resortbooking.application.utils.Enums;
+
 @Entity
 @Table(name = "hotel_photos")
 public class Media {
 
-	private enum MediaType{
-		PHOTO,
-		VIDEO
-	}
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(name = "media_type")
-	private MediaType mediaType;
+	private Enums.MediaType mediaType;
 
 	@Column(name = "url", nullable = false)
 	private String url;
