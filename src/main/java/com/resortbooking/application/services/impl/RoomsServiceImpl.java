@@ -34,7 +34,7 @@ public class RoomsServiceImpl implements RoomsService {
         	}
         	Rooms room = RoomsMapper.toEntity(dto, hotel.get());
         	room.setIsAvailable(true);
-        	room.setCreateDate(LocalDateTime.now());
+        	room.setCreatedDate(LocalDateTime.now());
         	room.setUpdatedAt(LocalDateTime.now());
         	
         	room = roomsRepository.save(room);

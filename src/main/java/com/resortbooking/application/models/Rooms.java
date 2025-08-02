@@ -7,6 +7,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+@EnableJpaAuditing@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(name = "rooms")
 public class Rooms {
@@ -36,9 +42,11 @@ public class Rooms {
 	@Column(name = "number_of_beds")
 	private String numberOfBeds;
 	
-	@Column(name = "created_at")
-	private LocalDateTime createDate;
+	@CreatedDate
+	@Column(name = "created_at",  updatable = false)
+	private LocalDateTime createdDate;
 	
+	@LastModifiedDate
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
@@ -141,12 +149,12 @@ public class Rooms {
 		this.numberOfBeds = numberOfBeds;
 	}
 
-	public LocalDateTime getCreateDate() {
-		return createDate;
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
 	}
 
-	public void setCreateDate(LocalDateTime createDate) {
-		this.createDate = createDate;
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
 	}
 
 	public LocalDateTime getUpdatedAt() {

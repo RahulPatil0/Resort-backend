@@ -84,4 +84,12 @@ public class RoomsDto {
         this.hotel = hotel;
     }
 
+	public String getNumberOfBeds() {
+		return numberOfBeds;
+	}
+
+	public void setNumberOfBeds(String numberOfBeds) {
+		this.numberOfBeds = numberOfBeds;
+	}
+
 }
