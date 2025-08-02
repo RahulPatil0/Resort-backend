@@ -47,11 +47,10 @@ public class RoomsServiceImpl implements RoomsService {
         	
         	room = roomsRepository.save(room);
         	
-        	for (AmenityDTO amentiyDto : dto.getAmenity()) {
-				Amenity amenity = AmenityMapper.toEntity(amentiyDto);
-				amenity.setRooms(room);
-				amenityRepository.save(amenity);
-			}
+			Amenity amenity = new Amenity();
+			amenity.setAmenities(dto.getAmenity());
+			amenity.setRooms(room);
+			amenityRepository.save(amenity);
         	
             return dto;
         } catch (Exception e) {
