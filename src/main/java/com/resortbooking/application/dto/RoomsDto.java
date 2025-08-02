@@ -1,6 +1,7 @@
 package com.resortbooking.application.dto;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 /**
  * DTO for hotel room data.
@@ -16,9 +17,8 @@ public class RoomsDto {
     private String description;
     private HotelDto hotel;
     private String numberOfBeds;
-
-   
-    // Getters and Setters
+    
+    private Set<AmenityDTO> amenity;   
 
     public Long getId() {
         return id;
@@ -90,6 +90,14 @@ public class RoomsDto {
 
 	public void setNumberOfBeds(String numberOfBeds) {
 		this.numberOfBeds = numberOfBeds;
+	}
+
+	public Set<AmenityDTO> getAmenity() {
+		return amenity;
+	}
+
+	public void setAmenity(Set<AmenityDTO> amenity) {
+		this.amenity = amenity;
 	}
 
 }

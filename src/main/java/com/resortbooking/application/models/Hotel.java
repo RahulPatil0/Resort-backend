@@ -60,7 +60,7 @@ public class Hotel {
 	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
 	private List<Media> media;
 
-	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private Set<Amenity> amenities = new HashSet<>();
 
 	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

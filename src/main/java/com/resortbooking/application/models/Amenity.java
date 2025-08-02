@@ -2,7 +2,10 @@ package com.resortbooking.application.models;
 
 import java.util.List;
 
+import com.resortbooking.application.utils.StringListJsonConverter;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -21,6 +24,7 @@ public class Amenity {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @Convert(converter = StringListJsonConverter.class)
     private List<String> amenities;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,6 +50,22 @@ public class Amenity {
 
 	public void setAmenities(List<String> amenities) {
 		this.amenities = amenities;
+	}
+
+	public Hotel getHotel() {
+		return hotel;
+	}
+
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
+	}
+
+	public Rooms getRooms() {
+		return rooms;
+	}
+
+	public void setRooms(Rooms rooms) {
+		this.rooms = rooms;
 	}
 
 }
