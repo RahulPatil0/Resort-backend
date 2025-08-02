@@ -2,7 +2,6 @@ package com.resortbooking.application.mappers;
 
 import org.springframework.beans.BeanUtils;
 
-import com.resortbooking.application.dto.HotelDto;
 import com.resortbooking.application.dto.RoomsDto;
 import com.resortbooking.application.models.Hotel;
 import com.resortbooking.application.models.Rooms;

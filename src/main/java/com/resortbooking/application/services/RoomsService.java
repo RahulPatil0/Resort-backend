@@ -1,5 +1,6 @@
 package com.resortbooking.application.services;
 
+import com.resortbooking.application.dto.RoomsDto;
 import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.models.Hotel;
 import com.resortbooking.application.models.Rooms;
@@ -7,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoomsService {
-	Rooms createRoom(Rooms room) throws ResortBookingException;
+	RoomsDto createRoom(RoomsDto dto, Long hotelId) throws ResortBookingException;
 
 	List<Rooms> getAllRooms() throws ResortBookingException;
 

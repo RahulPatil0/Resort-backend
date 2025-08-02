@@ -2,6 +2,7 @@ package com.resortbooking.application.models;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +35,12 @@ public class Rooms {
 	
 	@Column(name = "number_of_beds")
 	private String numberOfBeds;
+	
+	@Column(name = "created_at")
+	private LocalDateTime createDate;
+	
+	@Column(name = "updated_at")
+	private LocalDateTime updatedAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hotel_id", nullable = false)
@@ -124,5 +131,29 @@ public class Rooms {
 
 	public void setAmenities(Set<Amenity> amenities) {
 		this.amenities = amenities;
+	}
+
+	public String getNumberOfBeds() {
+		return numberOfBeds;
+	}
+
+	public void setNumberOfBeds(String numberOfBeds) {
+		this.numberOfBeds = numberOfBeds;
+	}
+
+	public LocalDateTime getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(LocalDateTime createDate) {
+		this.createDate = createDate;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 }

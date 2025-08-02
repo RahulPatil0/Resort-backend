@@ -1,7 +1,7 @@
 package com.resortbooking.application.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,22 +19,22 @@ public class OtpController {
 	private OtpService otpService;
 
     @PostMapping("/request-otp")
-    public ResortBookingResponse requestOtp(@RequestBody OtpDTO dto) {
+    public ResortBookingResponse<String> requestOtp(@RequestBody OtpDTO dto) {
         try {
             String msg = otpService.generateOtp(dto);
-            return new ResortBookingResponse(msg, HttpStatusCode.valueOf(200));
+            return new ResortBookingResponse<String>(msg, HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResortBookingResponse(e.getLocalizedMessage(), HttpStatusCode.valueOf(500));
+            return new ResortBookingResponse<String>(e.getLocalizedMessage(),  HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/verify-otp")
-    public ResortBookingResponse verifyOtp(@RequestBody OtpDTO dto) {
+    public ResortBookingResponse<String> verifyOtp(@RequestBody OtpDTO dto) {
     	try {
             String msg = otpService.verifyOtp(dto);
-            return new ResortBookingResponse(msg, HttpStatusCode.valueOf(200));
+            return new ResortBookingResponse<String>(msg, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResortBookingResponse(e.getLocalizedMessage(), HttpStatusCode.valueOf(500));
+            return new ResortBookingResponse<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

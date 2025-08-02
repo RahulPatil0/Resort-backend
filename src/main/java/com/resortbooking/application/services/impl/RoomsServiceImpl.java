@@ -1,13 +1,17 @@
 package com.resortbooking.application.services.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.resortbooking.application.dao.HotelRepository;
 import com.resortbooking.application.dao.RoomsRepository;
+import com.resortbooking.application.dto.RoomsDto;
 import com.resortbooking.application.exception.ResortBookingException;
+import com.resortbooking.application.mappers.RoomsMapper;
 import com.resortbooking.application.models.Hotel;
 import com.resortbooking.application.models.Rooms;
 import com.resortbooking.application.services.RoomsService;
@@ -17,14 +21,26 @@ public class RoomsServiceImpl implements RoomsService {
 
     @Autowired
     private RoomsRepository roomsRepository;
+    
+    @Autowired
+    private HotelRepository hotelRepository;
 
     @Override
-    public Rooms createRoom(Rooms room) throws ResortBookingException{
+    public RoomsDto createRoom(RoomsDto dto, Long hotelId) throws ResortBookingException{
         try {
-            return roomsRepository.save(room);
+        	Optional<Hotel> hotel = hotelRepository.findById(hotelId);
+        	if(hotel.isEmpty()) {
+        		throw new ResortBookingException("Hotel not found");
+        	}
+        	Rooms room = RoomsMapper.toEntity(dto, hotel.get());
+        	room.setIsAvailable(true);
+        	room.setCreateDate(LocalDateTime.now());
+        	room.setUpdatedAt(LocalDateTime.now());
+        	
+        	room = roomsRepository.save(room);
+            return RoomsMapper.toDto(room);
         } catch (Exception e) {
-            // Log the exception
-//            System.err.println("Error creating room: " + e.getMessage());
+            System.err.println("Error creating room: " + e.getMessage());
             throw new ResortBookingException("Error creating room: " + e.getMessage());
         }
     }

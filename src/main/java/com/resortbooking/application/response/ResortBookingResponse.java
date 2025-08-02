@@ -7,9 +7,9 @@ public class ResortBookingResponse<T> {
     private String message;
     private String status;
     private T data;
-
-    public ResortBookingResponse(String message, HttpStatus status) {
-        this.message = message;
+    
+    public ResortBookingResponse(T data, HttpStatus status) {
+        this.data = data;
         this.status = status.toString();
     }
 
