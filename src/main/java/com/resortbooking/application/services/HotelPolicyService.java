@@ -1,16 +1,21 @@
 package com.resortbooking.application.services;
 
-import java.util.List;
-
 import com.resortbooking.application.dto.HotelPolicyDTO;
 import com.resortbooking.application.exception.ResortBookingException;
 
+import java.util.List;
+
 public interface HotelPolicyService {
-    HotelPolicyDTO addPolicy(HotelPolicyDTO dto) throws ResortBookingException;
-    
-    List<HotelPolicyDTO> getPoliciesByHotel(Long hotelId) throws ResortBookingException;
-    
+
+    HotelPolicyDTO addPolicy(HotelPolicyDTO hotelPolicyDTO) throws ResortBookingException;
+
+    List<HotelPolicyDTO> getAllPolicies() throws ResortBookingException;
+
+    HotelPolicyDTO getPolicyById(Long id) throws ResortBookingException;
+
+    HotelPolicyDTO updatePolicy(Long id, HotelPolicyDTO hotelPolicyDTO) throws ResortBookingException;
+
     void deletePolicy(Long id) throws ResortBookingException;
 
-    HotelPolicyDTO updatePolicy(Long id, HotelPolicyDTO dto) throws ResortBookingException;
+    List<HotelPolicyDTO> getPoliciesByHotelId(Long hotelId) throws ResortBookingException;
 }

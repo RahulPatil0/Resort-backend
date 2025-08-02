@@ -1,99 +1,63 @@
-//
-//package com.resortbooking.application.controllers;
-//
-//import java.util.List;
-//
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.web.bind.annotation.DeleteMapping;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//import com.resortbooking.application.dto.HotelPolicyDTO;
-//import com.resortbooking.application.exception.ResortBookingException;
-//import com.resortbooking.application.response.ResortBookingResponse;
-//import com.resortbooking.application.services.HotelPolicyService;
-//
-//@RestController
-//@RequestMapping("/api/hotel-policies")
-//public class HotelPolicyController {
-//
-//	@Autowired
-//	private HotelPolicyService policyService;
-//
-//	private static final Logger logger = LoggerFactory.getLogger(HotelPolicyController.class);
-//
-//	// 🔹 Add new policy
-//	@PostMapping
-//	public ResortBookingResponse addPolicy(@RequestBody HotelPolicyDTO dto) {
-//		String message = null;
-//		HttpStatus status = HttpStatus.CREATED;
-//		try {
-//			HotelPolicyDTO created = policyService.addPolicy(dto);
-//			logger.info("Hotel policy created successfully with ID {}", created.getId());
-//			message = "Hotel policy added successfully.";
-//		} catch (ResortBookingException e) {
-//			message = e.getMessage();
-//			status = HttpStatus.BAD_REQUEST;
-//			logger.error("Error adding hotel policy: {}", e.getMessage(), e);
-//		} catch (Exception e) {
-//			message = "Failed to add hotel policy: " + e.getMessage();
-//			status = HttpStatus.INTERNAL_SERVER_ERROR;
-//			logger.error("Error adding hotel policy: {}", e.getMessage(), e);
-//		}
-//		return new ResortBookingResponse(message, status);
-//	}
-//
-//	// 🔹 Get policies by hotel ID
-//	@GetMapping("/hotel/{hotelId}")
-//	public ResortBookingResponse getByHotel(@PathVariable Long hotelId) {
-//		String message = null;
-//		HttpStatus status = HttpStatus.OK;
-//		try {
-//			List<HotelPolicyDTO> policies = policyService.getPoliciesByHotel(hotelId);
-//			if (policies.isEmpty()) {
-//				logger.warn("No policies found for hotel ID {}", hotelId);
-//				message = "No policies found for this hotel.";
-//				status = HttpStatus.NOT_FOUND;
-//			} else {
-//				message = "Policies retrieved successfully.";
-//			}
-//		} catch (ResortBookingException e) {
-//			message = e.getMessage();
-//			status = HttpStatus.BAD_REQUEST;
-//			logger.error("Error retrieving policies for hotel ID {}: {}", hotelId, e.getMessage(), e);
-//		} catch (Exception e) {
-//			message = "Failed to retrieve policies: " + e.getMessage();
-//			status = HttpStatus.INTERNAL_SERVER_ERROR;
-//			logger.error("Error retrieving policies for hotel ID {}: {}", hotelId, e.getMessage(), e);
-//		}
-//		return new ResortBookingResponse(message, status);
-//	}
-//
-//	// 🔹 Delete policy by ID
-//	@DeleteMapping("/{id}")
-//	public ResortBookingResponse deletePolicy(@PathVariable Long id) {
-//		String message = null;
-//		HttpStatus status = HttpStatus.NO_CONTENT;
-//		try {
-//			policyService.deletePolicy(id);
-//			logger.info("Hotel policy ID {} deleted successfully", id);
-//			message = "Hotel policy deleted successfully.";
-//		} catch (ResortBookingException e) {
-//			message = e.getMessage();
-//			status = HttpStatus.BAD_REQUEST;
-//			logger.error("Error deleting policy ID {}: {}", id, e.getMessage(), e);
-//		} catch (Exception e) {
-//			message = "Failed to delete policy: " + e.getMessage();
-//			status = HttpStatus.INTERNAL_SERVER_ERROR;
-//			logger.error("Error deleting policy ID {}: {}", id, e.getMessage(), e);
-//		}
-//		return new ResortBookingResponse(message, status);
-//	}
-//}
+package com.resortbooking.application.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.resortbooking.application.dto.HotelPolicyDTO;
+import com.resortbooking.application.dto.ResortBookingResponse;
+import com.resortbooking.application.exception.ResortBookingException;
+import com.resortbooking.application.services.HotelPolicyService;
+
+@RestController
+@RequestMapping("/api/policies")
+@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
+public class HotelPolicyController {
+
+    @Autowired
+    private HotelPolicyService hotelPolicyService;
+
+    @PostMapping
+    public ResponseEntity<ResortBookingResponse> addPolicy(@RequestBody HotelPolicyDTO policyDTO) throws ResortBookingException {
+        hotelPolicyService.addPolicy(policyDTO);
+        return new ResponseEntity<>(
+                new ResortBookingResponse("Policy created successfully", HttpStatus.CREATED),
+                HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<HotelPolicyDTO> getPolicyById(@PathVariable Long id) throws ResortBookingException {
+        return ResponseEntity.ok(hotelPolicyService.getPolicyById(id));
+    }
+
+    @GetMapping("/hotel/{hotelId}")
+    public ResponseEntity<List<HotelPolicyDTO>> getPoliciesByHotelId(@PathVariable Long hotelId) throws ResortBookingException {
+        return ResponseEntity.ok(hotelPolicyService.getPoliciesByHotelId(hotelId));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResortBookingResponse> updatePolicy(
+            @PathVariable Long id,
+            @RequestBody HotelPolicyDTO policyDTO) throws ResortBookingException {
+
+        hotelPolicyService.updatePolicy(id, policyDTO);
+        return ResponseEntity.ok(new ResortBookingResponse("Policy updated successfully", HttpStatus.OK));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResortBookingResponse> deletePolicy(@PathVariable Long id) throws ResortBookingException {
+        hotelPolicyService.deletePolicy(id);
+        return ResponseEntity.ok(new ResortBookingResponse("Policy deleted successfully", HttpStatus.OK));
+    }
+}

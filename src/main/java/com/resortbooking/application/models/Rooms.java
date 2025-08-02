@@ -31,6 +31,9 @@ public class Rooms {
 
 	@Column(name = "description")
 	private String description;
+	
+	@Column(name = "number_of_beds")
+	private String numberOfBeds;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hotel_id", nullable = false)

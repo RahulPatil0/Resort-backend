@@ -9,42 +9,25 @@ import com.resortbooking.application.models.Rooms;
 
 public class RoomsMapper {
 
-    public static RoomsDto toDto(Rooms room) {
-        if (room == null) {
-            return null;
-        }
+	public static RoomsDto toDto(Rooms room) {
+		if (room == null) {
+			return null;
+		}
+		RoomsDto dto = new RoomsDto();
 
-        Hotel hotel = room.getHotel();
-        HotelDto hotelDTO = new HotelDto();
-        
-        BeanUtils.copyProperties(hotel, hotelDTO);
+		BeanUtils.copyProperties(room, dto);
+		return dto;
 
-        return new RoomsDto(
-                room.getId(),
-                room.getRoomNumber(),
-                room.getType(),
-                room.getPricePerNight(),
-                room.getIsAvailable() != null && room.getIsAvailable() ? "Available" : "Unavailable",
-                room.getCapacity(),
-                room.getDescription(),
-                hotelDTO
-        );
-    }
+	}
 
-    public static Rooms toEntity(RoomsDto dto, Hotel hotel) {
-        if (dto == null) {
-            return null;
-        }
+	public static Rooms toEntity(RoomsDto dto, Hotel hotel) {
+		if (dto == null) {
+			return null;
+		}
 
-        Rooms room = new Rooms();
-        room.setId(dto.getId());
-        room.setRoomNumber(dto.getRoomNumber());
-        room.setType(dto.getType());
-        room.setPricePerNight(dto.getPricePerNight());
-        room.setCapacity(dto.getCapacity());
-        room.setDescription(dto.getDescription());
-        room.setIsAvailable("Available".equalsIgnoreCase(dto.getStatus()));
-        room.setHotel(hotel);
-        return room;
-    }
+		Rooms room = new Rooms();
+		BeanUtils.copyProperties(hotel, room);
+		room.setHotel(hotel);
+		return room;
+	}
 }

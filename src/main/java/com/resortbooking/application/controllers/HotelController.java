@@ -264,7 +264,7 @@ public class HotelController {
         String message = null;
         HttpStatus status = HttpStatus.OK;
         try {
-            List<HotelPolicyDTO> policies = hotelPolicyService.getPoliciesByHotel(hotelId);
+            List<HotelPolicyDTO> policies = hotelPolicyService.getPoliciesByHotelId(hotelId);
             if (policies.isEmpty()) {
                 message = "No policies found for this hotel.";
                 status = HttpStatus.NOT_FOUND;

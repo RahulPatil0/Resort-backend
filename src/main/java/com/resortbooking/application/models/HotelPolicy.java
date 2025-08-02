@@ -12,15 +12,14 @@ public class HotelPolicy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @Column(length = 1000)
-    private String description;
-    
-    @Column(name="policyType")
+    @Column(name = "policy_type", nullable = false)
     private String policyType;
 
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hotel_id", nullable = false)
+    @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
 	public Long getId() {
@@ -31,6 +30,13 @@ public class HotelPolicy {
 		this.id = id;
 	}
 
+	public String getPolicyType() {
+		return policyType;
+	}
+
+	public void setPolicyType(String policyType) {
+		this.policyType = policyType;
+	}
 
 	public String getDescription() {
 		return description;
@@ -47,20 +53,10 @@ public class HotelPolicy {
 	public void setHotel(Hotel hotel) {
 		this.hotel = hotel;
 	}
-	
-	
-
-	public String getPolicyType() {
-		return policyType;
-	}
-
-	public void setPolicyType(String policyType) {
-		this.policyType = policyType;
-	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(description, hotel, id);
+		return Objects.hash(description, hotel, id, policyType);
 	}
 
 	@Override
@@ -73,14 +69,15 @@ public class HotelPolicy {
 			return false;
 		HotelPolicy other = (HotelPolicy) obj;
 		return Objects.equals(description, other.description) && Objects.equals(hotel, other.hotel)
-				&& Objects.equals(id, other.id) ;
+				&& Objects.equals(id, other.id) && Objects.equals(policyType, other.policyType);
 	}
 
 	@Override
 	public String toString() {
-		return "HotelPolicy [id=" + id + " description=" + description + ", hotel="
+		return "HotelPolicy [id=" + id + ", policyType=" + policyType + ", description=" + description + ", hotel="
 				+ hotel + "]";
 	}
 
+   
     
 }

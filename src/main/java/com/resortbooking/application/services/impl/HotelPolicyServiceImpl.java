@@ -26,54 +26,65 @@ public class HotelPolicyServiceImpl implements HotelPolicyService {
 
     @Override
     public HotelPolicyDTO addPolicy(HotelPolicyDTO dto) throws ResortBookingException {
-        try {
-            Hotel hotel = hotelRepo.findById(dto.getHotelId())
-                    .orElseThrow(() -> new ResortBookingException("Hotel not found with ID: " + dto.getHotelId()));
-            HotelPolicy policy = HotelPolicyMapper.toEntity(dto, hotel);
-            return HotelPolicyMapper.toDTO(policyRepo.save(policy));
-        } catch (Exception e) {
-            throw new ResortBookingException("Error adding policy: " + e.getMessage());
-        }
+        Hotel hotel = hotelRepo.findById(dto.getHotelId())
+                .orElseThrow(() -> new ResortBookingException("Hotel not found with ID: " + dto.getHotelId()));
+        HotelPolicy policy = HotelPolicyMapper.toEntity(dto, hotel);
+        return HotelPolicyMapper.toDTO(policyRepo.save(policy));
     }
 
     @Override
-    public List<HotelPolicyDTO> getPoliciesByHotel(Long hotelId) throws ResortBookingException {
+    public List<HotelPolicyDTO> getAllPolicies() throws ResortBookingException {
         try {
-            return policyRepo.findByHotelId(hotelId).stream()
+            return policyRepo.findAll().stream()
                     .map(HotelPolicyMapper::toDTO)
                     .collect(Collectors.toList());
         } catch (Exception e) {
-            throw new ResortBookingException("Error fetching policies by hotel: " + e.getMessage());
+            throw new ResortBookingException("Error fetching all policies: " + e.getMessage());
         }
     }
 
     @Override
-    public void deletePolicy(Long id) throws ResortBookingException {
-        try {
-            policyRepo.deleteById(id);
-        } catch (Exception e) {
-            throw new ResortBookingException("Error deleting policy: " + e.getMessage());
-        }
+    public HotelPolicyDTO getPolicyById(Long id) throws ResortBookingException {
+        return policyRepo.findById(id)
+                .map(HotelPolicyMapper::toDTO)
+                .orElseThrow(() -> new ResortBookingException("Policy not found with ID: " + id));
     }
 
     @Override
     public HotelPolicyDTO updatePolicy(Long id, HotelPolicyDTO dto) throws ResortBookingException {
+        HotelPolicy existing = policyRepo.findById(id)
+                .orElseThrow(() -> new ResortBookingException("Policy not found with ID: " + id));
+
+        Hotel hotel = hotelRepo.findById(dto.getHotelId())
+                .orElseThrow(() -> new ResortBookingException("Hotel not found with ID: " + dto.getHotelId()));
+
+        existing.setPolicyType(dto.getPolicyType());
+        existing.setDescription(dto.getDescription());
+        existing.setHotel(hotel);
+
+        return HotelPolicyMapper.toDTO(policyRepo.save(existing));
+    }
+
+    @Override
+    public void deletePolicy(Long id) throws ResortBookingException {
+        if (!policyRepo.existsById(id)) {
+            throw new ResortBookingException("Policy not found with ID: " + id);
+        }
+        policyRepo.deleteById(id);
+    }
+
+    @Override
+    public List<HotelPolicyDTO> getPoliciesByHotelId(Long hotelId) throws ResortBookingException {
         try {
-            HotelPolicy existing = policyRepo.findById(id)
-                    .orElseThrow(() -> new ResortBookingException("Policy not found with ID: " + id));
+            Hotel hotel = hotelRepo.findById(hotelId)
+                    .orElseThrow(() -> new ResortBookingException("Hotel not found with ID: " + hotelId));
 
-            // Optional: validate new hotel
-            Hotel hotel = hotelRepo.findById(dto.getHotelId())
-                    .orElseThrow(() -> new ResortBookingException("Hotel not found with ID: " + dto.getHotelId()));
-
-            existing.setPolicyType(dto.getPolicyType());
-            existing.setDescription(dto.getDescription());
-            existing.setHotel(hotel); // 🛠 set hotel entity instead of hotelId
-
-            HotelPolicy saved = policyRepo.save(existing);
-            return HotelPolicyMapper.toDTO(saved);
+            return policyRepo.findByHotel(hotel).stream()
+                    .map(HotelPolicyMapper::toDTO)
+                    .collect(Collectors.toList());
         } catch (Exception e) {
-            throw new ResortBookingException("Error updating policy: " + e.getMessage());
+            throw new ResortBookingException("Error fetching policies for hotel ID: " + hotelId);
         }
     }
+
 }

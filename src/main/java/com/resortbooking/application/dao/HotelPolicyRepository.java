@@ -1,11 +1,10 @@
 package com.resortbooking.application.dao;
 
+import com.resortbooking.application.models.Hotel;
+import com.resortbooking.application.models.HotelPolicy;
+import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface HotelPolicyRepository extends JpaRepository<com.resortbooking.application.models.HotelPolicy, Long> {
-    List<com.resortbooking.application.models.HotelPolicy> findByHotelId(Long hotelId);
+public interface HotelPolicyRepository extends JpaRepository<HotelPolicy, Long> {
+    List<HotelPolicy> findByHotel(Hotel hotel);
 }

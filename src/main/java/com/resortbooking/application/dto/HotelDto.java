@@ -23,6 +23,8 @@ public class HotelDto {
     private LocalDateTime lastUpdatedAt;
     private Double latitude;
     private Double longitude;
+	private LocalDateTime checkInTime;
+	private LocalDateTime checkOutTime;
 
     private List<MediaDto> media;
     private Set<AmenityDTO> amenities;
@@ -157,4 +159,21 @@ public class HotelDto {
 	public void setMedia(List<MediaDto> media) {
 		this.media = media;
 	}
+
+	public LocalDateTime getCheckInTime() {
+		return checkInTime;
+	}
+
+	public void setCheckInTime(LocalDateTime checkInTime) {
+		this.checkInTime = checkInTime;
+	}
+
+	public LocalDateTime getCheckOutTime() {
+		return checkOutTime;
+	}
+
+	public void setCheckOutTime(LocalDateTime checkOutTime) {
+		this.checkOutTime = checkOutTime;
+	}
+	
 }

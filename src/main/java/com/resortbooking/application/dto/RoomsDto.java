@@ -15,24 +15,9 @@ public class RoomsDto {
     private Integer capacity;
     private String description;
     private HotelDto hotel;
+    private String numberOfBeds;
 
-    // Constructors
-
-    public RoomsDto() {
-    }
-
-    public RoomsDto(Long id, String roomNumber, String type, BigDecimal pricePerNight,
-                    String status, Integer capacity, String description, HotelDto hotel) {
-        this.id = id;
-        this.roomNumber = roomNumber;
-        this.type = type;
-        this.pricePerNight = pricePerNight;
-        this.status = status;
-        this.capacity = capacity;
-        this.description = description;
-        this.hotel = hotel;
-    }
-
+   
     // Getters and Setters
 
     public Long getId() {
@@ -99,19 +84,4 @@ public class RoomsDto {
         this.hotel = hotel;
     }
 
-    // toString
-
-    @Override
-    public String toString() {
-        return "RoomsDTO{" +
-                "id=" + id +
-                ", roomNumber='" + roomNumber + '\'' +
-                ", type='" + type + '\'' +
-                ", pricePerNight=" + pricePerNight +
-                ", status='" + status + '\'' +
-                ", capacity=" + capacity +
-                ", description='" + description + '\'' +
-                ", hotelId=" + (hotel != null ? hotel.getId() : null) +
-                '}';
-    }
 }
