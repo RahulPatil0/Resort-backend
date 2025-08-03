@@ -1,8 +1,12 @@
 package com.resortbooking.application.mappers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 
 import com.resortbooking.application.dto.RoomsDto;
+import com.resortbooking.application.models.Amenity;
 import com.resortbooking.application.models.Hotel;
 import com.resortbooking.application.models.Rooms;
 
@@ -13,6 +17,12 @@ public class RoomsMapper {
 			return null;
 		}
 		RoomsDto dto = new RoomsDto();
+		
+		List<String> amenities = new ArrayList<>();
+        for(Amenity amenity: room.getAmenities()) {
+        	amenities.addAll(amenity.getAmenities());
+        }
+        dto.setAmenity(amenities);
 
 		BeanUtils.copyProperties(room, dto);
 		return dto;

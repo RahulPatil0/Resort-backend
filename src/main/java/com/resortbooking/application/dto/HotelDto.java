@@ -28,25 +28,33 @@ public class HotelDto {
 	private LocalDateTime checkOutTime;
 
     private List<MediaDto> media;
-    private Set<AmenityDTO> amenities;
+    private List<String> amenity;
     private Set<HotelPolicyDTO> policyDetails;
+    private List<DocumentsDTO> documents;
 
     // Getters & Setters
-
     public Set<HotelPolicyDTO> getPolicyDetails() {
 		return policyDetails;
+	}
+
+	public List<DocumentsDTO> getDocuments() {
+		return documents;
+	}
+
+	public void setDocuments(List<DocumentsDTO> documents) {
+		this.documents = documents;
 	}
 
 	public void setPolicyDetails(Set<HotelPolicyDTO> policyDetails) {
 		this.policyDetails = policyDetails;
 	}
 
-	public Set<AmenityDTO> getAmenities() {
-		return amenities;
+	public List<String> getAmenity() {
+		return amenity;
 	}
 
-	public void setAmenities(Set<AmenityDTO> amenities) {
-		this.amenities = amenities;
+	public void setAmenity(List<String> amenity) {
+		this.amenity = amenity;
 	}
 
 	public Long getId() {

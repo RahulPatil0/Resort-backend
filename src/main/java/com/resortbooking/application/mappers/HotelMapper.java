@@ -7,14 +7,13 @@ import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 
-import com.resortbooking.application.dto.AmenityDTO;
 import com.resortbooking.application.dto.HotelDto;
-import com.resortbooking.application.dto.MediaDto;
 import com.resortbooking.application.dto.HotelPolicyDTO;
+import com.resortbooking.application.dto.MediaDto;
 import com.resortbooking.application.models.Amenity;
 import com.resortbooking.application.models.Hotel;
-import com.resortbooking.application.models.Media;
 import com.resortbooking.application.models.HotelPolicy;
+import com.resortbooking.application.models.Media;
 
 public class HotelMapper {
 
@@ -31,12 +30,11 @@ public class HotelMapper {
         }
         dto.setMedia(hotelPhotosDtos);
         
-        Set<AmenityDTO> amenties = new HashSet<>();
+        List<String> amenities = new ArrayList<>();
         for(Amenity amenity: hotel.getAmenities()) {
-        	AmenityDTO amenityDTO = AmenityMapper.toDTO(amenity);
-        	amenties.add(amenityDTO);
+        	amenities.addAll(amenity.getAmenities());
         }
-        dto.setAmenities(amenties);
+        dto.setAmenity(amenities);
         
         Set<HotelPolicyDTO> policyDTOs = new HashSet<>();
         for(HotelPolicy policy : hotel.getPolicies()) {

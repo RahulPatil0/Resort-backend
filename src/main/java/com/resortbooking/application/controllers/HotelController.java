@@ -50,7 +50,7 @@ public class HotelController {
     // ------------------ Hotel Endpoints ------------------
 
     @PostMapping("/create")
-    public ResortBookingResponse createHotel(@RequestBody HotelDto hotelDto) {
+    public ResortBookingResponse<?> createHotel(@RequestBody HotelDto hotelDto) {
         String message;
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -64,11 +64,11 @@ public class HotelController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
             logger.error("Error occurred while creating hotel: {}", e.getMessage(), e);
         }
-        return new ResortBookingResponse(message, status);
+        return new ResortBookingResponse<String>(message, status);
     }
 
     @GetMapping
-    public ResortBookingResponse getAllHotels() {
+    public ResortBookingResponse<?> getAllHotels() {
         String message;
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -76,7 +76,7 @@ public class HotelController {
             logger.info("Fetched {} hotels", hotels.size());
             message = "Fetched " + hotels.size() + " hotels";
             status = HttpStatus.OK;
-            return new ResortBookingResponse(hotels, status);
+            return new ResortBookingResponse<List<HotelDto>>(hotels, status);
         } catch (ResortBookingException e) {
             message = e.getMessage();
             logger.error("Error occurred while fetching hotels: {}", e.getMessage(), e);
@@ -85,11 +85,11 @@ public class HotelController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
             logger.error("Error occurred while fetching hotels: {}", e.getMessage(), e);
         }
-        return new ResortBookingResponse(message, status);
+        return new ResortBookingResponse<String>(message, status);
     }
 
     @GetMapping("/{id}")
-    public ResortBookingResponse getHotelById(@PathVariable Long id) {
+    public ResortBookingResponse<?> getHotelById(@PathVariable Long id) {
         String message;
         HttpStatus status = HttpStatus.OK;
         try {
@@ -97,7 +97,7 @@ public class HotelController {
             if (hotel != null) {
                 logger.info("Fetched hotel with ID {}", id);
                 message = "Fetched hotel with ID " + id;
-                return new ResortBookingResponse(hotel, status);
+                return new ResortBookingResponse<HotelDto>(hotel, status);
             } else {
                 message = "Hotel not found";
                 status = HttpStatus.NOT_FOUND;
@@ -112,10 +112,10 @@ public class HotelController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
             logger.error("Error fetching hotel by ID {}: {}", id, e.getMessage(), e);
         }
-        return new ResortBookingResponse(message, status);
+        return new ResortBookingResponse<String>(message, status);
     }
     @PutMapping("/{id}")
-    public ResortBookingResponse updateHotel(@PathVariable Long id, @RequestBody HotelDto hotelDto) {
+    public ResortBookingResponse<?> updateHotel(@PathVariable Long id, @RequestBody HotelDto hotelDto) {
         String message;
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
@@ -142,7 +142,7 @@ public class HotelController {
             logger.error("Error updating hotel with ID {}: {}", id, e.getMessage(), e);
         }
 
-        return new ResortBookingResponse(message, status);
+        return new ResortBookingResponse<String>(message, status);
     }
 
 
@@ -150,7 +150,7 @@ public class HotelController {
     // ------------------ Hotel Photos Endpoints ------------------
 
     @PostMapping("/photos/hotel/{hotelId}")
-    public ResortBookingResponse uploadPhoto(@PathVariable Long hotelId, @Valid @RequestBody Media photoRequest) {
+    public ResortBookingResponse<?> uploadPhoto(@PathVariable Long hotelId, @Valid @RequestBody Media photoRequest) {
         String message = "";
         HttpStatus status = HttpStatus.OK;
         try {
@@ -179,18 +179,18 @@ public class HotelController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
             logger.error("Error uploading photo for hotel ID {}: {}", hotelId, e.getMessage(), e);
         }
-        return new ResortBookingResponse(message, status);
+        return new ResortBookingResponse<String>(message, status);
     }
 
     @GetMapping("/photos/{photoId}")
-    public ResortBookingResponse getPhoto(@PathVariable Long photoId) {
+    public ResortBookingResponse<?> getPhoto(@PathVariable Long photoId) {
         String message = "";
         HttpStatus status = HttpStatus.OK;
         try {
             Optional<Media> photo = hotelPhotosService.getPhotoById(photoId);
             if (photo.isPresent()) {
                 logger.info("Fetched photo ID {}", photoId);
-                return new ResortBookingResponse(photo.get(), status);
+                return new ResortBookingResponse<Media>(photo.get(), status);
             } else {
                 message = "Photo not found.";
                 status = HttpStatus.NOT_FOUND;
@@ -201,11 +201,11 @@ public class HotelController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
             logger.error("Error retrieving photo ID {}: {}", photoId, e.getMessage(), e);
         }
-        return new ResortBookingResponse(message, status);
+        return new ResortBookingResponse<String>(message, status);
     }
 
     @GetMapping("/photos/hotel/{hotelId}")
-    public ResortBookingResponse getPhotosByHotel(@PathVariable Long hotelId) {
+    public ResortBookingResponse<?> getPhotosByHotel(@PathVariable Long hotelId) {
         String message = "";
         HttpStatus status = HttpStatus.OK;
         try {
@@ -216,18 +216,18 @@ public class HotelController {
             } else {
                 Hotel hotel = HotelMapper.toEntity(hotelDto);
                 List<Media> photos = hotelPhotosService.getPhotosByHotelSorted(hotel);
-                return new ResortBookingResponse(photos, status);
+                return new ResortBookingResponse<List<Media>>(photos, status);
             }
         } catch (Exception e) {
             message = "Failed to retrieve photos: " + e.getMessage();
             status = HttpStatus.INTERNAL_SERVER_ERROR;
             logger.error("Error retrieving photos for hotel ID {}: {}", hotelId, e.getMessage(), e);
         }
-        return new ResortBookingResponse(message, status);
+        return new ResortBookingResponse<String>(message, status);
     }
 
     @DeleteMapping("/photos/{photoId}")
-    public ResortBookingResponse deletePhoto(@PathVariable Long photoId) {
+    public ResortBookingResponse<?> deletePhoto(@PathVariable Long photoId) {
         String message = "";
         HttpStatus status = HttpStatus.NO_CONTENT;
         try {
@@ -246,13 +246,13 @@ public class HotelController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
             logger.error("Error deleting photo ID {}: {}", photoId, e.getMessage(), e);
         }
-        return new ResortBookingResponse(message, status);
+        return new ResortBookingResponse<String>(message, status);
     }
 
     // ------------------ Hotel Policy Endpoints ------------------
 
     @PostMapping("/policies")
-    public ResortBookingResponse addPolicy(@RequestBody HotelPolicyDTO dto) {
+    public ResortBookingResponse<?> addPolicy(@RequestBody HotelPolicyDTO dto) {
         String message = null;
         HttpStatus status = HttpStatus.CREATED;
         try {
@@ -264,11 +264,11 @@ public class HotelController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
             logger.error("Error adding hotel policy: {}", e.getMessage(), e);
         }
-        return new ResortBookingResponse(message, status);
+        return new ResortBookingResponse<String>(message, status);
     }
 
     @GetMapping("/policies/hotel/{hotelId}")
-    public ResortBookingResponse getByHotel(@PathVariable Long hotelId) {
+    public ResortBookingResponse<?> getByHotel(@PathVariable Long hotelId) {
         String message = null;
         HttpStatus status = HttpStatus.OK;
         try {
@@ -279,18 +279,18 @@ public class HotelController {
                 logger.warn("No policies found for hotel ID {}", hotelId);
             } else {
                 message = "Policies retrieved successfully.";
-                return new ResortBookingResponse(policies, status);
+                return new ResortBookingResponse<List<HotelPolicyDTO>>(policies, status);
             }
         } catch (Exception e) {
             message = "Failed to retrieve policies: " + e.getMessage();
             status = HttpStatus.INTERNAL_SERVER_ERROR;
             logger.error("Error retrieving policies for hotel ID {}: {}", hotelId, e.getMessage(), e);
         }
-        return new ResortBookingResponse(message, status);
+        return new ResortBookingResponse<String>(message, status);
     }
 
     @DeleteMapping("/policies/{id}")
-    public ResortBookingResponse deletePolicy(@PathVariable Long id) {
+    public ResortBookingResponse<?> deletePolicy(@PathVariable Long id) {
         String message = null;
         HttpStatus status = HttpStatus.NO_CONTENT;
         try {
@@ -302,11 +302,11 @@ public class HotelController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
             logger.error("Error deleting policy ID {}: {}", id, e.getMessage(), e);
         }
-        return new ResortBookingResponse(message, status);
+        return new ResortBookingResponse<String>(message, status);
     }
     
 @PutMapping("/policies/{id}")
-public ResortBookingResponse updatePolicy(@PathVariable Long id, @RequestBody HotelPolicyDTO dto) {
+public ResortBookingResponse<?> updatePolicy(@PathVariable Long id, @RequestBody HotelPolicyDTO dto) {
     String message = null;
     HttpStatus status = HttpStatus.BAD_REQUEST;
 
@@ -316,7 +316,7 @@ public ResortBookingResponse updatePolicy(@PathVariable Long id, @RequestBody Ho
         message = "Hotel policy updated successfully.";
         status = HttpStatus.OK;
         logger.info("Hotel policy ID {} updated successfully", id);
-        return new ResortBookingResponse(updatedPolicy, status);
+        return new ResortBookingResponse<HotelPolicyDTO>(updatedPolicy, status);
     } catch (ResortBookingException e) {
         message = e.getMessage();
         logger.error("Error updating policy ID {}: {}", id, e.getMessage(), e);
@@ -327,7 +327,7 @@ public ResortBookingResponse updatePolicy(@PathVariable Long id, @RequestBody Ho
         logger.error("Error updating policy ID {}: {}", id, e.getMessage(), e);
     }
 
-    return new ResortBookingResponse(message, status);
+    return new ResortBookingResponse<String>(message, status);
 }
 }
 
