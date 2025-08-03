@@ -32,10 +32,13 @@ public class Hotel {
 
 	@Column(name = "website")
 	private String website;
-	
+
 	@Column(name = "contact_email")
 	private String contactEmail;
-	
+
+	@Column(name = "contact_number")
+	private String contactNumber;
+
 	@Column(name = "latitude")
 	private Double latitude;
 
@@ -44,16 +47,16 @@ public class Hotel {
 
 	@Column(name = "price_perNight")
 	private BigDecimal pricePerNight;
-	
+
 	@Column(name = "check_in_time")
 	private LocalDateTime checkInTime;
-	
+
 	@Column(name = "check_out_time")
 	private LocalDateTime checkOutTime;
-	
+
 	@Column(name = "created_at")
 	private LocalDateTime createdAt;
-	
+
 	@Column(name = "last_updated_at")
 	private LocalDateTime lastUpdatedAt;
 
@@ -65,7 +68,7 @@ public class Hotel {
 
 	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private Set<HotelPolicy> policies = new HashSet<>();
-	
+
 	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
 	private List<Documents> documents;
 
@@ -73,7 +76,7 @@ public class Hotel {
 	public Set<HotelPolicy> getPolicies() {
 		return policies;
 	}
-	
+
 	public void setPolicies(Set<HotelPolicy> policies) {
 		this.policies = policies;
 	}
@@ -82,7 +85,6 @@ public class Hotel {
 		return id;
 	}
 
-	
 	public Set<Amenity> getAmenities() {
 		return amenities;
 	}
@@ -94,7 +96,7 @@ public class Hotel {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
@@ -114,6 +116,7 @@ public class Hotel {
 	public String getHotelName() {
 		return hotelName;
 	}
+	
 
 	public void setHotelName(String hotelName) {
 		this.hotelName = hotelName;
@@ -171,9 +174,25 @@ public class Hotel {
 		return longitude;
 	}
 
+	public String getContactNumber() {
+		return contactNumber;
+	}
+
+	public void setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
+	}
+
+	public List<Media> getMedia() {
+		return media;
+	}
+
+	public void setMedia(List<Media> media) {
+		this.media = media;
+	}
+
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
-	}	
+	}
 
 	public LocalDateTime getCheckInTime() {
 		return checkInTime;
@@ -214,15 +233,16 @@ public class Hotel {
 	public void setPricePerNight(BigDecimal pricePerNight) {
 		this.pricePerNight = pricePerNight;
 	}
-	
+
 	public void setContactEmail(String contactEmail) {
 		this.contactEmail = contactEmail;
 	}
-	
+
 	public String getContactEmail() {
 		return contactEmail;
 	}
 
+	
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)

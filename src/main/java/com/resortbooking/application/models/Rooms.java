@@ -57,7 +57,7 @@ public class Rooms {
 	@OneToMany(mappedBy = "rooms", fetch = FetchType.LAZY)
 	private List<Media> media;
 
-	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "rooms", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Amenity> amenities = new HashSet<>();
 
 	// Getters and Setters

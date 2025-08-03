@@ -1,7 +1,6 @@
 package com.resortbooking.application.services.impl;
 
 import java.time.LocalDateTime;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,10 +10,8 @@ import org.springframework.stereotype.Service;
 import com.resortbooking.application.dao.AmenityRepository;
 import com.resortbooking.application.dao.HotelRepository;
 import com.resortbooking.application.dao.RoomsRepository;
-import com.resortbooking.application.dto.AmenityDTO;
 import com.resortbooking.application.dto.RoomsDto;
 import com.resortbooking.application.exception.ResortBookingException;
-import com.resortbooking.application.mappers.AmenityMapper;
 import com.resortbooking.application.mappers.RoomsMapper;
 import com.resortbooking.application.models.Amenity;
 import com.resortbooking.application.models.Hotel;

@@ -43,7 +43,7 @@ public class RoomsController {
 			@RequestParam Long hotelId) {
 		try {
 			dto=roomsService.createRoom(dto,hotelId);
-			return new ResortBookingResponse<RoomsDto>("Hotel created", HttpStatus.CREATED, dto);
+			return new ResortBookingResponse<RoomsDto>(dto, HttpStatus.CREATED);
 
 		} catch (Exception e) {
 			return new ResortBookingResponse<String>("Error creating room: " + e.getMessage(),
@@ -57,7 +57,7 @@ public class RoomsController {
 			Optional<Rooms> roomOpt = roomsService.getRoomById(id);
 			if (roomOpt.isPresent()) {
 				RoomsDto dto = RoomsMapper.toDto(roomOpt.get());
-				return new ResortBookingResponse<>("Room retrieved successfully.", HttpStatus.OK, dto);
+				return new ResortBookingResponse<>(dto, HttpStatus.OK);
 			} else {
 				return new ResortBookingResponse<>("Room not found with ID: " + id, HttpStatus.NOT_FOUND);
 			}
@@ -87,7 +87,7 @@ public class RoomsController {
 		try {
 			HotelDto hotelDto = hotelService.getHotelById(hotelId);
 			if (hotelDto == null) {
-				return new ResortBookingResponse<>("Hotel not found.", HttpStatus.NOT_FOUND, null);
+				return new ResortBookingResponse<>("Hotel not found.", HttpStatus.NOT_FOUND);
 			}
 
 			Hotel hotel = HotelMapper.toEntity(hotelDto);
@@ -95,7 +95,7 @@ public class RoomsController {
 			List<RoomsDto> roomDtos = rooms.stream().map(RoomsMapper::toDto).collect(Collectors.toList());
 
 			String message = roomDtos.isEmpty() ? "No rooms found for this hotel." : "Rooms retrieved successfully.";
-			return new ResortBookingResponse<>(message, HttpStatus.OK, roomDtos);
+			return new ResortBookingResponse<>(roomDtos, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResortBookingResponse<>("Error retrieving rooms by hotel: " + e.getMessage(),
 							HttpStatus.INTERNAL_SERVER_ERROR);
@@ -119,7 +119,7 @@ public class RoomsController {
 				Rooms updatedRoom = roomsService.updateRoom(room);
 				RoomsDto dto = RoomsMapper.toDto(updatedRoom);
 
-				return new ResortBookingResponse<RoomsDto>("Room updated successfully.", HttpStatus.OK, dto);
+				return new ResortBookingResponse<RoomsDto>(dto, HttpStatus.OK);
 			} else {
 				return new ResortBookingResponse<String>("Room not found.", HttpStatus.NOT_FOUND);
 			}

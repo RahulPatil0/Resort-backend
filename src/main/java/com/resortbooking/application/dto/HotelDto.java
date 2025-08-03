@@ -15,6 +15,7 @@ public class HotelDto {
     private String address;
     private String description;
     private String contactEmail;
+    private String contactNumber;
     private BigDecimal pricePerNight;
     private Double rating;
     private Boolean isAvailable;
@@ -175,5 +176,14 @@ public class HotelDto {
 	public void setCheckOutTime(LocalDateTime checkOutTime) {
 		this.checkOutTime = checkOutTime;
 	}
+
+	public String getContactNumber() {
+		return contactNumber;
+	}
+
+	public void setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
+	}
+	
 	
 }

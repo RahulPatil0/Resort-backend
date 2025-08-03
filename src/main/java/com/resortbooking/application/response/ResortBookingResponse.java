@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 
 public class ResortBookingResponse<T> {
 
-    private String message;
     private String status;
     private T data;
     
@@ -13,15 +12,7 @@ public class ResortBookingResponse<T> {
         this.status = status.toString();
     }
 
-    public ResortBookingResponse(String message, HttpStatus status, T data) {
-        this.message = message;
-        this.status = status.toString();
-        this.data = data;
-    }
-
-    public String getMessage() {
-        return message;
-    }
+   
 
     public String getStatus() {
         return status;
@@ -31,9 +22,7 @@ public class ResortBookingResponse<T> {
         return data;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+   
 
     public void setStatus(String status) {
         this.status = status;
