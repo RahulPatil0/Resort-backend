@@ -11,14 +11,22 @@ import org.springframework.stereotype.Service;
 
 import com.resortbooking.application.dao.MediaRepository;
 import com.resortbooking.application.dao.AmenityRepository;
+import com.resortbooking.application.dao.DocumentsRepository;
+import com.resortbooking.application.dao.HotelPolicyRepository;
 import com.resortbooking.application.dao.HotelRepository;
+import com.resortbooking.application.dto.DocumentsDTO;
 import com.resortbooking.application.dto.HotelDto;
+import com.resortbooking.application.dto.HotelPolicyDTO;
 import com.resortbooking.application.dto.MediaDto;
 import com.resortbooking.application.exception.ResortBookingException;
+import com.resortbooking.application.mappers.DocumentMapper;
 import com.resortbooking.application.mappers.HotelMapper;
+import com.resortbooking.application.mappers.HotelPolicyMapper;
 import com.resortbooking.application.mappers.MediaMapper;
 import com.resortbooking.application.models.Amenity;
+import com.resortbooking.application.models.Documents;
 import com.resortbooking.application.models.Hotel;
+import com.resortbooking.application.models.HotelPolicy;
 import com.resortbooking.application.models.Media;
 import com.resortbooking.application.services.HotelService;
 
@@ -35,6 +43,12 @@ public class HotelServiceImpl implements HotelService {
 
 	@Autowired
 	private AmenityRepository amenityRepository;
+	
+	@Autowired
+	private DocumentsRepository documentsRepository;
+	
+	@Autowired
+	private HotelPolicyRepository policyRepository;
 
 	@Override
 	public String createHotel(HotelDto hotelDto) throws ResortBookingException {
@@ -45,6 +59,17 @@ public class HotelServiceImpl implements HotelService {
 				throw new ResortBookingException("Photos are mandatory for registration.");
 			}			
 			hotel = hotelRepository.save(hotel);
+			
+			for(DocumentsDTO documentsDTO: hotelDto.getDocuments()) {
+				Documents documents = DocumentMapper.toEntity(documentsDTO);
+				documents.setHotel(hotel);
+				documentsRepository.save(documents);
+			}
+			
+			for(HotelPolicyDTO hotelPolicyDto: hotelDto.getPolicyDetails()) {
+				HotelPolicy policy = HotelPolicyMapper.toEntity(hotelPolicyDto, hotel);
+				policyRepository.save(policy);
+			}
 
 			for (MediaDto mediaDto : hotelDto.getMedia()) {
 				Media media = MediaMapper.toEntity(mediaDto);

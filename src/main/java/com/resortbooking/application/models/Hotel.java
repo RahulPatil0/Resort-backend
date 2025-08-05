@@ -27,7 +27,7 @@ public class Hotel {
 	@Column(name = "address")
 	private String address;
 
-	@Column(name = "description")
+	@Column(name = "description", columnDefinition = "TEXT")
 	private String description;
 
 	@Column(name = "rating")

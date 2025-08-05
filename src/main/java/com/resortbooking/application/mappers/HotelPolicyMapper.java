@@ -1,5 +1,7 @@
 package com.resortbooking.application.mappers;
 
+import org.springframework.beans.BeanUtils;
+
 import com.resortbooking.application.dto.HotelPolicyDTO;
 import com.resortbooking.application.models.HotelPolicy;
 import com.resortbooking.application.models.Hotel;
@@ -8,9 +10,8 @@ public class HotelPolicyMapper {
 
     public static HotelPolicy toEntity(HotelPolicyDTO dto, Hotel hotel) {
         HotelPolicy policy = new HotelPolicy();
-        policy.setId(dto.getId());
-        policy.setPolicyType(dto.getPolicyType());
-        policy.setDescription(dto.getDescription());
+
+        BeanUtils.copyProperties(hotel, policy);
         policy.setHotel(hotel);
         return policy;
     }

@@ -7,10 +7,12 @@ import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 
+import com.resortbooking.application.dto.DocumentsDTO;
 import com.resortbooking.application.dto.HotelDto;
 import com.resortbooking.application.dto.HotelPolicyDTO;
 import com.resortbooking.application.dto.MediaDto;
 import com.resortbooking.application.models.Amenity;
+import com.resortbooking.application.models.Documents;
 import com.resortbooking.application.models.Hotel;
 import com.resortbooking.application.models.HotelPolicy;
 import com.resortbooking.application.models.Media;
@@ -41,6 +43,13 @@ public class HotelMapper {
         	HotelPolicyDTO policyDTO = HotelPolicyMapper.toDTO(policy);
         	policyDTOs.add(policyDTO);
         }
+        
+        List<DocumentsDTO> documentsDTOs = new ArrayList<>();
+        for(Documents documents : hotel.getDocuments()) {
+        	DocumentsDTO documentsDTO = DocumentMapper.toDto(documents);
+        	documentsDTOs.add(documentsDTO);
+        }
+        dto.setDocuments(documentsDTOs);
         dto.setPolicyDetails(policyDTOs);
         return dto;
     }
