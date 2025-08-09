@@ -77,18 +77,25 @@ public class Hotel {
 	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private Set<Amenity> amenities = new HashSet<>();
 
-	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private Set<HotelPolicy> policies = new HashSet<>();
+	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<HotelPolicy> policies;
 
 	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
 	private List<Documents> documents;
 
-	// Getters & Setters
-	public Set<HotelPolicy> getPolicies() {
+	public LocalDateTime getApprovalDate() {
+		return approvalDate;
+	}
+
+	public void setApprovalDate(LocalDateTime approvalDate) {
+		this.approvalDate = approvalDate;
+	}
+
+	public List<HotelPolicy> getPolicies() {
 		return policies;
 	}
 
-	public void setPolicies(Set<HotelPolicy> policies) {
+	public void setPolicies(List<HotelPolicy> policies) {
 		this.policies = policies;
 	}
 

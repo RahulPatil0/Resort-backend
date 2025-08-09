@@ -11,7 +11,7 @@ public class HotelPolicyMapper {
     public static HotelPolicy toEntity(HotelPolicyDTO dto, Hotel hotel) {
         HotelPolicy policy = new HotelPolicy();
 
-        BeanUtils.copyProperties(hotel, policy);
+        BeanUtils.copyProperties(dto, policy);
         policy.setHotel(hotel);
         return policy;
     }

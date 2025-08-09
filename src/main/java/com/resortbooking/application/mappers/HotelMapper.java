@@ -1,69 +1,3 @@
-//package com.resortbooking.application.mappers;
-//
-//import java.util.ArrayList;
-//import java.util.HashSet;
-//import java.util.List;
-//import java.util.Set;
-//
-//import org.springframework.beans.BeanUtils;
-//
-//import com.resortbooking.application.dto.DocumentsDTO;
-//import com.resortbooking.application.dto.HotelDto;
-//import com.resortbooking.application.dto.HotelPolicyDTO;
-//import com.resortbooking.application.dto.MediaDto;
-//import com.resortbooking.application.models.Amenity;
-//import com.resortbooking.application.models.Documents;
-//import com.resortbooking.application.models.Hotel;
-//import com.resortbooking.application.models.HotelPolicy;
-//import com.resortbooking.application.models.Media;
-//
-//
-//public class HotelMapper {
-//
-//    public static HotelDto toDto(Hotel hotel) {
-//        HotelDto dto = new HotelDto();
-//        
-//        BeanUtils.copyProperties(hotel, dto);
-//        
-//        List<MediaDto> hotelPhotosDtos = new ArrayList<>();
-//        
-//        for(Media media : hotel.getHotelPhotos()) {
-//        	MediaDto hotelPhotosDto = MediaMapper.toDto(media);
-//        	hotelPhotosDtos.add(hotelPhotosDto);
-//        }
-//        dto.setMedia(hotelPhotosDtos);
-//        
-//        List<String> amenities = new ArrayList<>();
-//        for(Amenity amenity: hotel.getAmenities()) {
-//        	amenities.addAll(amenity.getAmenities());
-//        }
-//        dto.setAmenity(amenities);
-//        
-//        Set<HotelPolicyDTO> policyDTOs = new HashSet<>();
-//        for(HotelPolicy policy : hotel.getPolicies()) {
-//        	HotelPolicyDTO policyDTO = HotelPolicyMapper.toDTO(policy);
-//        	policyDTOs.add(policyDTO);
-//        }
-//        
-//        List<DocumentsDTO> documentsDTOs = new ArrayList<>();
-//        for(Documents documents : hotel.getDocuments()) {
-//        	DocumentsDTO documentsDTO = DocumentMapper.toDto(documents);
-//        	documentsDTOs.add(documentsDTO);
-//        }
-//        dto.setDocuments(documentsDTOs);
-//        dto.setPolicies(policyDTOs);
-//        return dto;
-//    }
-//
-//    public static Hotel toEntity(HotelDto dto) {
-//        Hotel hotel = new Hotel();
-//
-//        BeanUtils.copyProperties(dto, hotel);
-//        
-//        return hotel;
-//    }
-//}
-
 package com.resortbooking.application.mappers;
 
 import java.util.ArrayList;
@@ -83,40 +17,41 @@ import com.resortbooking.application.models.Hotel;
 import com.resortbooking.application.models.HotelPolicy;
 import com.resortbooking.application.models.Media;
 
+
 public class HotelMapper {
 
     public static HotelDto toDto(Hotel hotel) {
         HotelDto dto = new HotelDto();
-
+        
         BeanUtils.copyProperties(hotel, dto);
-
+        
         List<MediaDto> hotelPhotosDtos = new ArrayList<>();
-        for (Media media : hotel.getHotelPhotos()) {
-            MediaDto hotelPhotosDto = MediaMapper.toDto(media);
-            hotelPhotosDtos.add(hotelPhotosDto);
+        
+        for(Media media : hotel.getHotelPhotos()) {
+        	MediaDto hotelPhotosDto = MediaMapper.toDto(media);
+        	hotelPhotosDtos.add(hotelPhotosDto);
         }
         dto.setMedia(hotelPhotosDtos);
-
+        
         List<String> amenities = new ArrayList<>();
-        for (Amenity amenity : hotel.getAmenities()) {
-            amenities.addAll(amenity.getAmenities());
+        for(Amenity amenity: hotel.getAmenities()) {
+        	amenities.addAll(amenity.getAmenities());
         }
         dto.setAmenity(amenities);
-
+        
         Set<HotelPolicyDTO> policyDTOs = new HashSet<>();
-        for (HotelPolicy policy : hotel.getPolicies()) {
-            HotelPolicyDTO policyDTO = HotelPolicyMapper.toDTO(policy);
-            policyDTOs.add(policyDTO);
+        for(HotelPolicy policy : hotel.getPolicies()) {
+        	HotelPolicyDTO policyDTO = HotelPolicyMapper.toDTO(policy);
+        	policyDTOs.add(policyDTO);
         }
-        dto.setPolicies(policyDTOs);
-
+        
         List<DocumentsDTO> documentsDTOs = new ArrayList<>();
-        for (Documents documents : hotel.getDocuments()) {
-            DocumentsDTO documentsDTO = DocumentMapper.toDto(documents);
-            documentsDTOs.add(documentsDTO);
+        for(Documents documents : hotel.getDocuments()) {
+        	DocumentsDTO documentsDTO = DocumentMapper.toDto(documents);
+        	documentsDTOs.add(documentsDTO);
         }
         dto.setDocuments(documentsDTOs);
-
+        dto.setPolicies(policyDTOs);
         return dto;
     }
 
@@ -124,13 +59,8 @@ public class HotelMapper {
         Hotel hotel = new Hotel();
 
         BeanUtils.copyProperties(dto, hotel);
-
+        
         return hotel;
     }
-
-    // Test method to check if getPolicies() is accessible on Hotel entity
-    public static void test(Hotel hotel) {
-        Set<HotelPolicy> policies = hotel.getPolicies(); // Check if this compiles
-        System.out.println("Policies size: " + (policies != null ? policies.size() : "null"));
-    }
 }
+
