@@ -18,4 +18,13 @@ public class EmailService {
         message.setText("Your OTP is: " + otp);
         mailSender.send(message);
     }
+    public void sendResortConfirmationEmail(String toEmail, String resortName) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("Resort Registration Confirmation");
+        message.setText(
+            "Hello,\n\nYour resort \"" + resortName + "\" has been successfully registered.\n\nThank you for using our platform!"
+        );
+        mailSender.send(message);
+    }
 }

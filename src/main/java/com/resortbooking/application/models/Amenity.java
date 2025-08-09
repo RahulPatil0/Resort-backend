@@ -23,7 +23,7 @@ public class Amenity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique=false)
     @Convert(converter = StringListJsonConverter.class)
     private List<String> amenities;
 

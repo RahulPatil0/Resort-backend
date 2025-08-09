@@ -29,7 +29,7 @@ public class JwtMapper {
                 .setIssuedAt(new Date()) // issue time
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // expiration time (10 hours)
                 .signWith(key, SignatureAlgorithm.HS256) // sign with HS256 and secret key
-                .compact();
+                .compact();	
     }
 
     // 🔍 Extract username (subject) from the JWT token

@@ -274,4 +274,5 @@ public class Hotel {
 		return "Hotel{" + "id=" + id + ", hotelName='" + hotelName + '\'' + ", address='" + address + '\'' + ", rating="
 				+ rating + ", isAvailable=" + isAvailable + ", website='" + website + '\'' + '}';
 	}
+
 }
