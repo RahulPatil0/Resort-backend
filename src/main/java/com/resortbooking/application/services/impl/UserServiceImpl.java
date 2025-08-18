@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
             user.setVerified(false);
             user.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
             
-//            Optional<Roles> userRole = rolesRepository.findByRole("USER");
+//          Optional<Roles> userRole = rolesRepository.findByRole("USER");
 //			user.setRole(userRole.get());
 //			
 //			Roles roles = new Roles();
