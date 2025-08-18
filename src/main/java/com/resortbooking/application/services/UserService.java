@@ -1,5 +1,6 @@
 package com.resortbooking.application.services;
 
+import com.resortbooking.application.dto.UserDTO;
 import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.models.User;
 
@@ -8,7 +9,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    User registerUser(User user) throws ResortBookingException;
+    User registerUser(UserDTO dto) throws ResortBookingException;
 
     Optional<User> getUserById(Long id) throws ResortBookingException;
 

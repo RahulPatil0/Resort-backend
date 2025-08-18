@@ -1,117 +1,119 @@
 package com.resortbooking.application.dto;
 
-import com.resortbooking.application.models.User;
-
 import java.time.LocalDateTime;
+
+import com.resortbooking.application.models.Roles;
 
 public class UserDTO {
 
     private Long id;
-    private String email;
+
+    private String firstName;
+
+    private String lastName;
+
+    private String password;
+
     private String phoneNumber;
-    private String fullName;
-    private LocalDateTime registeredAt;
 
-    public UserDTO() {
-    }
+    private boolean isVerified;
 
-    public UserDTO(Long id, String email, String phoneNumber, String fullName, LocalDateTime registeredAt) {
-        this.id = id;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.fullName = fullName;
-        this.registeredAt = registeredAt;
-    }
+    private Boolean isGoogleUser;
 
-    // Getters and setters
+    private String profileImageUrl;
 
-    public Long getId() {
-        return id;
-    }
+    private LocalDateTime createdAt;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private LocalDateTime lastModifiedAt;
 
-    public String getEmail() {
-        return email;
-    }
+    private Roles role;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public String getFullName() {
-        return fullName;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public LocalDateTime getRegisteredAt() {
-        return registeredAt;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public void setRegisteredAt(LocalDateTime registeredAt) {
-        this.registeredAt = registeredAt;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    // Conversion: User → UserDTO
-    public static UserDTO fromEntity(User user) {
-        if (user == null) return null;
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-        String fullName = (user.getFirstName() != null ? user.getFirstName() : "") +
-                          (user.getLastName() != null ? " " + user.getLastName() : "");
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 
-        return new UserDTO(
-                user.getId(),
-                user.getEmail(),
-                user.getPhoneNumber(),
-                fullName.trim(),
-                user.getCreatedAt()
-        );
-    }
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 
-    // Conversion: UserDTO → User
-    public static User toEntity(UserDTO dto) {
-        if (dto == null) return null;
+	public boolean isVerified() {
+		return isVerified;
+	}
 
-        User user = new User();
-        user.setId(dto.getId());
-        user.setEmail(dto.getEmail());
-        user.setPhoneNumber(dto.getPhoneNumber());
+	public void setVerified(boolean isVerified) {
+		this.isVerified = isVerified;
+	}
 
-        if (dto.getFullName() != null && dto.getFullName().contains(" ")) {
-            String[] names = dto.getFullName().split(" ", 2);
-            user.setFirstName(names[0]);
-            user.setLastName(names[1]);
-        } else {
-            user.setFirstName(dto.getFullName());
-            user.setLastName("");
-        }
+	public Boolean getIsGoogleUser() {
+		return isGoogleUser;
+	}
 
-        user.setCreatedAt(dto.getRegisteredAt());
+	public void setIsGoogleUser(Boolean isGoogleUser) {
+		this.isGoogleUser = isGoogleUser;
+	}
 
-        return user;
-    }
+	public String getProfileImageUrl() {
+		return profileImageUrl;
+	}
 
-    @Override
-    public String toString() {
-        return "UserDTO{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", registeredAt=" + registeredAt +
-                '}';
-    }
+	public void setProfileImageUrl(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getLastModifiedAt() {
+		return lastModifiedAt;
+	}
+
+	public void setLastModifiedAt(LocalDateTime lastModifiedAt) {
+		this.lastModifiedAt = lastModifiedAt;
+	}
+
+	public Roles getRole() {
+		return role;
+	}
+
+	public void setRole(Roles role) {
+		this.role = role;
+	}
+    
 }

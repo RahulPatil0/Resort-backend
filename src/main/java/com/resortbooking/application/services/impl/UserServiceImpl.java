@@ -64,10 +64,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.resortbooking.application.dao.RolesRepository;
 import com.resortbooking.application.dao.UserRepository;
+import com.resortbooking.application.dto.UserDTO;
 import com.resortbooking.application.exception.ResortBookingException;
+import com.resortbooking.application.mappers.UserMapper;
+import com.resortbooking.application.models.Roles;
 import com.resortbooking.application.models.User;
 import com.resortbooking.application.services.UserService;
 
@@ -76,15 +81,42 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+    
+    @Autowired
+    private RolesRepository rolesRepository;
 
     @Override
-    public User registerUser(User user) throws ResortBookingException {
+    public User registerUser(UserDTO dto) throws ResortBookingException {
         try {
-            // Optional: hash password, validate email format, etc.
+        	User user = UserMapper.toEntity(dto);
+        	if (userRepository.existsByEmail(user.getEmail())) {
+                throw new ResortBookingException("Email already exists!");
+            }
+
+            // Check if phone number already exists
+            if (userRepository.existsByPhoneNumber(user.getPhoneNumber())) {
+                throw new ResortBookingException("Phone number already exists!");
+            }
+
+            // Set defaults
+            if (user.getIsGoogleUser() == null) {
+                user.setIsGoogleUser(false);
+            }
+            user.setVerified(false);
+            user.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
+            
+//            Optional<Roles> userRole = rolesRepository.findByRole("USER");
+//			user.setRole(userRole.get());
+//			
+//			Roles roles = new Roles();
+//			roles.setRole("USER");
+//			roles.setUsers(user);
+            
             return userRepository.save(user);
         } catch (Exception e) {
-            // Log the exception (assuming a logger is set up)
-//            System.err.println("Error registering user: " + e.getMessage());
             throw new ResortBookingException("Error registering user: " + e.getMessage());
         }
     }
@@ -94,8 +126,6 @@ public class UserServiceImpl implements UserService {
         try {
             return userRepository.findById(id);
         } catch (Exception e) {
-            // Log the exception
-//            System.err.println("Error fetching user by ID: " + e.getMessage());
             throw new ResortBookingException("Error fetching user by ID: " + e.getMessage());
         }
     }

@@ -4,8 +4,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
 import jakarta.persistence.*;
 
+@EnableJpaAuditing@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(name = "users")
 public class User {
@@ -35,8 +41,10 @@ public class User {
 
     private String profileImageUrl;
 
+    @CreatedDate
     private LocalDateTime createdAt;
 
+    @LastModifiedDate
     private LocalDateTime lastModifiedAt;
 
     @ManyToOne(fetch = FetchType.EAGER)
