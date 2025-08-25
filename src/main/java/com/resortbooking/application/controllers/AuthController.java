@@ -3,14 +3,6 @@
 
 package com.resortbooking.application.controllers;
 
-import com.resortbooking.application.dto.*;
-import com.resortbooking.application.exception.ResortBookingException;
-import com.resortbooking.application.mappers.JwtMapper;
-import com.resortbooking.application.models.User;
-import com.resortbooking.application.response.ResortBookingResponse;
-import com.resortbooking.application.services.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +12,18 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.resortbooking.application.dto.LoginRequest;
+import com.resortbooking.application.dto.LoginResponse;
+import com.resortbooking.application.dto.UserDTO;
+import com.resortbooking.application.exception.ResortBookingException;
+import com.resortbooking.application.mappers.JwtMapper;
+import com.resortbooking.application.response.ResortBookingResponse;
+import com.resortbooking.application.services.UserService;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -69,13 +72,13 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
-        try {
-            userService.resetPassword(request.getEmail());
-            return ResponseEntity.ok("Password reset instructions sent to your email.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process request");
-        }
-    }
+//    @PostMapping("/forgot-password")
+//    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+//        try {
+//            userService.resetPassword(request.getEmail());
+//            return ResponseEntity.ok("Password reset instructions sent to your email.");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process request");
+//        }
+//    }
 }

@@ -1,15 +1,29 @@
 package com.resortbooking.application.models;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @EnableJpaAuditing@EntityListeners(AuditingEntityListener.class)
 @Entity
@@ -47,10 +61,11 @@ public class User {
     @LastModifiedDate
     private LocalDateTime lastModifiedAt;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id") // Foreign key to roles table
-    private Roles role;
-    
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@JoinTable(name = "users_roles", 
+	joinColumns = {@JoinColumn(name = "user_id")}, 
+	inverseJoinColumns = {@JoinColumn(name = "role_id")})
+	private Set<Roles> roles = new HashSet<Roles>();    
     
 	@OneToMany(mappedBy="user") 
 	private List<HotelReview> hotelReviews;
@@ -150,17 +165,15 @@ public class User {
         this.lastModifiedAt = lastModifiedAt;
     }
 
+    public Set<Roles> getRoles() {
+		return roles;
+	}
 
-    public Roles getRole() {
-        return role;
-    }
+	public void setRoles(Set<Roles> roles) {
+		this.roles = roles;
+	}
 
-    public void setRole(Roles role) {
-        this.role = role;
-    }
-
-
-    @Override
+	@Override
     public int hashCode() {
         return Objects.hash(id, email, phoneNumber);
     }
@@ -173,17 +186,5 @@ public class User {
         return Objects.equals(id, other.id) &&
                Objects.equals(email, other.email) &&
                Objects.equals(phoneNumber, other.phoneNumber);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", role=" + (role != null ? role.getRole() : "null") +
-                '}';
     }
 }

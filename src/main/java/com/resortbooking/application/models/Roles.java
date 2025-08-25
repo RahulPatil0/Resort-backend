@@ -1,9 +1,11 @@
 package com.resortbooking.application.models;
 
-import java.util.List;
-import java.util.Objects;
-
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "roles")
@@ -15,12 +17,6 @@ public class Roles {
     
     @Column(name="role")
     private String role;
-
-    // Mapped by 'role' field in User class
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<User> users;
-
-    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -36,28 +32,4 @@ public class Roles {
         this.role = role;
     }
 
-    public List<User> getUsers() {
-        return users;
-    }
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-    // hashCode, equals, toString
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, role);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Roles other)) return false;
-        return Objects.equals(id, other.id) && Objects.equals(role, other.role);
-    }
-
-    @Override
-    public String toString() {
-        return "Roles [id=" + id + ", role=" + role + "]";
-    }
 }

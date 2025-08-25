@@ -21,8 +21,9 @@ public class JwtMapper {
     private String secretKey;
 
     // 📌 Generate a JWT token based on the username and roles
-    public String generateToken(String username, List<String> roles) {
+    public String generateToken(String username) {
         SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes());
+        List<String> roles = extractRoles(username);
         return Jwts.builder()
                 .setSubject(username) // token subject (typically the username or userId)
                 .claim("roles", roles) // Add roles as a claim in the token
