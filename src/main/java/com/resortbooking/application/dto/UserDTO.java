@@ -25,6 +25,8 @@ public class UserDTO {
     private LocalDateTime createdAt;
 
     private LocalDateTime lastModifiedAt;
+    
+    private String email;
 
     private Roles role;
 
@@ -115,5 +117,14 @@ public class UserDTO {
 	public void setRole(Roles role) {
 		this.role = role;
 	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
     
 }
