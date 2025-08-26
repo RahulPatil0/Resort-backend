@@ -53,6 +53,9 @@ public class Hotel {
 
 	@Column(name = "price_perNight")
 	private BigDecimal pricePerNight;
+	
+	@Column(name = "minimum_Price")
+	private BigDecimal minimum_Price;
 
 	@Column(name = "check_in_time")
 	private LocalDateTime checkInTime;
@@ -259,8 +262,15 @@ public class Hotel {
 	public String getContactEmail() {
 		return contactEmail;
 	}
-
 	
+	public BigDecimal getMinimum_Price() {
+		return minimum_Price;
+	}
+
+	public void setMinimum_Price(BigDecimal minimum_Price) {
+		this.minimum_Price = minimum_Price;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)

@@ -63,7 +63,7 @@ public class ResortSecurityConfig {
 					@Override
 					public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 						CorsConfiguration config = new CorsConfiguration();
-						config.setAllowedOrigins(Arrays.asList("http://localhost:5173/", "http://localhost:8081/"));
+						config.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:8080"));
 						config.setAllowedMethods(Collections.singletonList("*"));
 						config.setAllowCredentials(true);
 						config.setAllowedHeaders(Collections.singletonList("*"));
@@ -76,7 +76,21 @@ public class ResortSecurityConfig {
 				//.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
 				//.addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
 				.addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/contact","/validator","/user/signIn","/user/signUp","/user/signInWithGoogle", "/validator/verify","/products/getAll").permitAll().anyRequest().authenticated())
+				.authorizeHttpRequests(auth -> auth
+					    .requestMatchers(
+					        "/contact",
+					        "/validator",
+					        "/user/signIn",
+					        "/user/signUp",
+					        "/user/signInWithGoogle",
+					        "/validator/verify",
+					        "/products/getAll",
+					        "/api/auth/request-otp",   
+					        "/api/auth/verify-otp" ,
+					        "/api/auth/register"  
+					    ).permitAll()
+					    .anyRequest().authenticated()
+					)
 				.formLogin(Customizer.withDefaults()).httpBasic(Customizer.withDefaults())
 				.exceptionHandling(exception -> exception.accessDeniedHandler(new RestAuthorizationEntryPoint()))
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(new RestAuthenticationEntryPoint()));

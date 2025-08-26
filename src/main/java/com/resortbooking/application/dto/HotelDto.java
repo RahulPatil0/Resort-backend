@@ -220,6 +220,7 @@ public class HotelDto {
     private String contactEmail = "";
     private String contactNumber = "";
     private BigDecimal pricePerNight;
+    private BigDecimal minimumPrice;
     private Double rating;
     private Boolean isAvailable;
     private String website = "";
@@ -408,4 +409,13 @@ public class HotelDto {
     public void setOwnerEmail(String ownerEmail) {
         this.ownerEmail = ownerEmail != null ? ownerEmail : "";
     }
+
+	public BigDecimal getMinimumPrice() {
+		return minimumPrice;
+	}
+
+	public void setMinimumPrice(BigDecimal minimumPrice) {
+		this.minimumPrice = minimumPrice;
+	}
+    
 }
