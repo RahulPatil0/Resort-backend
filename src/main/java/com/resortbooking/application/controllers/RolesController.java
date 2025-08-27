@@ -83,6 +83,8 @@ package com.resortbooking.application.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -92,9 +94,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.resortbooking.application.dto.RolesDto;
 import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.models.Roles;
 import com.resortbooking.application.response.ResortBookingResponse;
@@ -104,12 +106,14 @@ import com.resortbooking.application.services.RolesService;
 @RequestMapping("/api/roles")
 public class RolesController {
 
+	private static final Logger logger = LoggerFactory.getLogger(RolesController.class);
+	
 	@Autowired
 	private RolesService rolesService;
 
 	// Create a new role
 	@PostMapping
-	public ResortBookingResponse createRole(@RequestBody Roles role) {
+	public ResortBookingResponse<?> createRole(@RequestBody RolesDto role) {
 		String message = "";
 		HttpStatus status = HttpStatus.CREATED;
 
@@ -124,12 +128,13 @@ public class RolesController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 
-		return new ResortBookingResponse(message, status);
+		logger.info(message);
+		return new ResortBookingResponse<String>(message, status);
 	}
 
 	// 🔹 Get All Roles
 	@GetMapping
-	public ResortBookingResponse getAllRoles() {
+	public ResortBookingResponse<?> getAllRoles() {
 		String message = "";
 		HttpStatus status = HttpStatus.OK;
 
@@ -139,41 +144,19 @@ public class RolesController {
 				message = "No roles found.";
 				status = HttpStatus.NOT_FOUND;
 			} else {
-				message = "Roles retrieved successfully.";
+				return new ResortBookingResponse<List<Roles>>(roles, status);
 			}
 		} catch (Exception e) {
 			message = "Error fetching roles: " + e.getMessage();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 
-		return new ResortBookingResponse(message, status);
-	}
-
-	// 🔹 Get Role by ID
-	@GetMapping("/{id}")
-	public ResortBookingResponse getRoleById(@PathVariable Long id) {
-		String message = "";
-		HttpStatus status = HttpStatus.OK;
-
-		try {
-			Optional<Roles> role = rolesService.getRoleById(id);
-			if (role.isPresent()) {
-				message = "Role retrieved successfully.";
-			} else {
-				message = "Role not found.";
-				status = HttpStatus.NOT_FOUND;
-			}
-		} catch (Exception e) {
-			message = "Error retrieving role by ID: " + e.getMessage();
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-
-		return new ResortBookingResponse(message, status);
+		return new ResortBookingResponse<String>(message, status);
 	}
 
 	// 🔹 Update Role
 	@PutMapping("/{id}")
-	public ResortBookingResponse updateRole(@PathVariable Long id, @RequestBody Roles updatedRole) {
+	public ResortBookingResponse<?> updateRole(@PathVariable Long id, @RequestBody Roles updatedRole) {
 		String message = "";
 		HttpStatus status = HttpStatus.OK;
 
@@ -193,12 +176,12 @@ public class RolesController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 
-		return new ResortBookingResponse(message, status);
+		return new ResortBookingResponse<String>(message, status);
 	}
 
 	// 🔹 Delete Role
 	@DeleteMapping("/{id}")
-	public ResortBookingResponse deleteRole(@PathVariable Long id) {
+	public ResortBookingResponse<?> deleteRole(@PathVariable Long id) {
 		String message = "";
 		HttpStatus status = HttpStatus.NO_CONTENT;
 
@@ -216,6 +199,6 @@ public class RolesController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 
-		return new ResortBookingResponse(message, status);
+		return new ResortBookingResponse<String>(message, status);
 	}
 }

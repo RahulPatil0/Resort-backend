@@ -78,16 +78,9 @@ public class ResortSecurityConfig {
 				.addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
 				.authorizeHttpRequests(auth -> auth
 					    .requestMatchers(
-					        "/contact",
-					        "/validator",
-					        "/user/signIn",
-					        "/user/signUp",
-					        "/user/signInWithGoogle",
-					        "/validator/verify",
-					        "/products/getAll",
-					        "/api/auth/request-otp",   
-					        "/api/auth/verify-otp" ,
-					        "/api/auth/register"  
+					    	"/api/auth/register",
+					    	"/api/auth/login",
+					    	"/api/roles"
 					    ).permitAll()
 					    .anyRequest().authenticated()
 					)

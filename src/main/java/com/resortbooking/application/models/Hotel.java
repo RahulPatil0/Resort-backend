@@ -1,21 +1,24 @@
 package com.resortbooking.application.models;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
-@EnableJpaAuditing@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(name = "hotels")
-public class Hotel {
+public class Hotel extends Auditable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,14 +69,6 @@ public class Hotel {
 	@Column(name = "approval_date")
 	private LocalDateTime approvalDate;
 
-	@CreatedDate
-	@Column(name = "created_at")
-	private LocalDateTime createdAt;
-
-	@LastModifiedDate
-	@Column(name = "last_updated_at")
-	private LocalDateTime lastUpdatedAt;
-
 	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
 	private List<Media> media;
 
@@ -116,22 +111,6 @@ public class Hotel {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public LocalDateTime getLastUpdatedAt() {
-		return lastUpdatedAt;
-	}
-
-	public void setLastUpdatedAt(LocalDateTime lastUpdatedAt) {
-		this.lastUpdatedAt = lastUpdatedAt;
 	}
 
 	public String getHotelName() {

@@ -1,6 +1,7 @@
 package com.resortbooking.application.services.impl;
 
 import com.resortbooking.application.dao.RolesRepository;
+import com.resortbooking.application.dto.RolesDto;
 import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.models.Roles;
 import com.resortbooking.application.services.RolesService;
@@ -18,12 +19,16 @@ public class RolesServiceImpl implements RolesService {
     private RolesRepository rolesRepository;
 
     @Override
-    public Roles createRole(Roles role) throws ResortBookingException{
+    public Roles createRole(RolesDto dto) throws ResortBookingException{
         try {
+        	Optional<Roles> existingRole = rolesRepository.findByRole(dto.getRole());
+        	if(existingRole.isPresent()) {
+        		throw new ResortBookingException( dto.getRole() + "Role Already Exist");
+        	}
+        	Roles role = new Roles();
+        	role.setRole(dto.getRole());
             return rolesRepository.save(role);
         } catch (Exception e) {
-            // Log the exception
-//            System.err.println("Error creating role: " + e.getMessage());
             throw new ResortBookingException("Error creating role: " + e.getMessage());
         }
     }

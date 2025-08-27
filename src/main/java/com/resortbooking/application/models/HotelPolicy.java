@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "hotel_policies")
-public class HotelPolicy {
+public class HotelPolicy extends Auditable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,6 +78,4 @@ public class HotelPolicy {
 				+ hotel + "]";
 	}
 
-   
-    
 }
