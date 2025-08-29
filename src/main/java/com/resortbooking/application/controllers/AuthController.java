@@ -46,7 +46,7 @@ public class AuthController {
         try {
             userService.registerUser(dto);
             message = "User registered successfully";
-            return new ResortBookingResponse<String>(message, HttpStatus.BAD_REQUEST);
+            return new ResortBookingResponse<String>(message, HttpStatus.CREATED);
         } catch (ResortBookingException e) {
             message = e.getMessage();
             logger.error("Error occurred while creating hotel: {}", e.getMessage(), e);
