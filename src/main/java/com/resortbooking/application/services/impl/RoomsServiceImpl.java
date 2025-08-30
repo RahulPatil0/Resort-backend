@@ -1,6 +1,5 @@
 package com.resortbooking.application.services.impl;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,8 +42,6 @@ public class RoomsServiceImpl implements RoomsService {
         	}
         	Rooms room = RoomsMapper.toEntity(dto, hotel.get());
         	room.setIsAvailable(true);
-        	room.setCreatedDate(LocalDateTime.now());
-        	room.setUpdatedAt(LocalDateTime.now());
         	
         	room = roomsRepository.save(room);
         	

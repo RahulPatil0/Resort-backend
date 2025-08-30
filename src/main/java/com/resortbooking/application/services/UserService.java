@@ -1,5 +1,6 @@
 package com.resortbooking.application.services;
 
+import com.resortbooking.application.dto.LoginRequest;
 import com.resortbooking.application.dto.UserDTO;
 import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.models.User;
@@ -9,7 +10,9 @@ import java.util.Optional;
 
 public interface UserService {
 
-    User registerUser(UserDTO dto) throws ResortBookingException;
+    void registerUser(UserDTO dto) throws ResortBookingException;
+    
+    String singIn(LoginRequest request) throws ResortBookingException;
 
     Optional<User> getUserById(Long id) throws ResortBookingException;
 
@@ -24,4 +27,6 @@ public interface UserService {
     List<User> getAllUsers() throws ResortBookingException;
 
     void deleteUser(Long id) throws ResortBookingException;
+
+	User saveUser(User user) throws ResortBookingException;
 }

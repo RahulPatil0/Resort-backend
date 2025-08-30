@@ -1,5 +1,6 @@
 package com.resortbooking.application.services;
 
+import com.resortbooking.application.dto.RolesDto;
 import com.resortbooking.application.exception.ResortBookingException;
 import com.resortbooking.application.models.Roles;
 
@@ -8,7 +9,7 @@ import java.util.Optional;
 
 public interface RolesService {
 
-    Roles createRole(Roles role) throws ResortBookingException;
+    Roles createRole(RolesDto role) throws ResortBookingException;
 
     List<Roles> getAllRoles() throws ResortBookingException;
 

@@ -45,7 +45,6 @@ public class HotelBookingMapper {
         booking.setNumberOfGuests(dto.getNumberOfGuests());
         booking.setTotalAmount(dto.getTotalAmount() != null ? dto.getTotalAmount().doubleValue() : 0.0);
         booking.setBookingStatus(dto.getStatus());
-        booking.setCreatedAt(dto.getCreatedAt());
 
         return booking;
     }

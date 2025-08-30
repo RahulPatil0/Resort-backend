@@ -8,10 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +17,6 @@ import com.resortbooking.application.dto.LoginRequest;
 import com.resortbooking.application.dto.LoginResponse;
 import com.resortbooking.application.dto.UserDTO;
 import com.resortbooking.application.exception.ResortBookingException;
-import com.resortbooking.application.mappers.JwtMapper;
 import com.resortbooking.application.response.ResortBookingResponse;
 import com.resortbooking.application.services.UserService;
 
@@ -30,12 +25,6 @@ import com.resortbooking.application.services.UserService;
 public class AuthController {
 
 	private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-	 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtMapper jwtMapper;
 
     @Autowired
     private UserService userService;
@@ -60,12 +49,8 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
-            Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
-            SecurityContextHolder.getContext().setAuthentication(auth);
-
-            String token = jwtMapper.generateToken(request.getUsername());
+        	String token = userService.singIn(request);
             return ResponseEntity.ok(new LoginResponse(token));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");

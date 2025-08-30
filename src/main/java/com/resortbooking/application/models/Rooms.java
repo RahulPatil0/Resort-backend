@@ -12,7 +12,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@EnableJpaAuditing@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(name = "rooms")
 public class Rooms {
@@ -41,14 +40,6 @@ public class Rooms {
 	
 	@Column(name = "number_of_beds")
 	private String numberOfBeds;
-	
-	@CreatedDate
-	@Column(name = "created_at",  updatable = false)
-	private LocalDateTime createdDate;
-	
-	@LastModifiedDate
-	@Column(name = "updated_at")
-	private LocalDateTime updatedAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hotel_id", nullable = false)
@@ -147,21 +138,5 @@ public class Rooms {
 
 	public void setNumberOfBeds(String numberOfBeds) {
 		this.numberOfBeds = numberOfBeds;
-	}
-
-	public LocalDateTime getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(LocalDateTime createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public LocalDateTime getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
 	}
 }
